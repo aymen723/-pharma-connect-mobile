@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Pharmaconnect",
-    "slug": "Pharmaconnect",
+    "slug": "pharmaconnect",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,6 +25,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5aef722b-c9b4-4409-bf4b-221630d1c17d"
+      }
+    },
+    "owner": "aymen723"
   }
 }
