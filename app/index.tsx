@@ -5,6 +5,10 @@ import MapView from "react-native-maps";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export default function Page() {
+  const [user, _setUser] = React.useState("hello");
+  React.useEffect(() => {
+    console.log(user);
+  }, []);
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
