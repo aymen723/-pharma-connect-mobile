@@ -7,32 +7,34 @@ import {
   FlatList,
   Dimensions,
 } from "react-native";
-import Walkthrough from "../../Component/walkthrough";
-import type { walk } from "../../Models/walkthrough";
-import { Link } from "expo-router";
-import { Gstyles } from "../../Models/Gloablestyle";
+import Walkthrough from "../Component/walkthrough";
+import type { walk } from "../Models/walkthrough";
+import { Link, router } from "expo-router";
+import { Gstyles } from "../constants/theme";
+import { StatusBar } from "expo-status-bar";
 
 const walk: walk[] = [
   {
     id: 1,
-    image: require("../../../../assets/Images/image1.png"),
+    image: require("../../../assets/Images/image1.png"),
     title: "first title",
     text: " Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rationepraesentium facere voluptate quo incidunt obcaecati dolore quia, ad",
   },
   {
     id: 2,
-    image: require("../../../../assets/Images/image2.png"),
+    image: require("../../../assets/Images/image2.png"),
     title: "second title",
     text: "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rationepraesentium facere voluptate quo incidunt obcaecati dolore quia, ad",
   },
 ];
-const { width, height } = Dimensions.get("window");
 
 export default function Launchpage() {
   const [index, setindex] = React.useState<number>(0);
 
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="white"></StatusBar>
+
       <View style={styles.box1}>
         <FlatList
           contentContainerStyle={styles.flatlist}
@@ -51,18 +53,14 @@ export default function Launchpage() {
         />
       </View>
       <View style={styles.box2}>
-        <Link
-          href={"./Signout"}
+        <TouchableOpacity
+          style={[Gstyles.Button, { backgroundColor: "#4157FF" }]}
           onPress={() => {
-            console.log("test");
+            router.push("/Signout");
           }}
         >
-          <TouchableOpacity
-            style={[Gstyles.Button, { backgroundColor: "#4157FF" }]}
-          >
-            <Text style={Gstyles.Buttontitle}>Skip</Text>
-          </TouchableOpacity>
-        </Link>
+          <Text style={Gstyles.Buttontitle}>Skip</Text>
+        </TouchableOpacity>
 
         <View style={{ display: "flex", flexDirection: "row" }}>
           {walk
@@ -93,9 +91,10 @@ export default function Launchpage() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    alignItems: "center",
+
+    backgroundColor: "#fff",
     justifyContent: "center",
+    alignItems: "center",
   },
   box1: {
     // borderWidth: 1,

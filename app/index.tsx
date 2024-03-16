@@ -1,29 +1,5 @@
-import { StyleSheet, Text, View, Image } from "react-native";
-import Launchpage from "./src/Containers/landingpages/Launchpage";
-import { StatusBar } from "expo-status-bar";
-import MapView from "react-native-maps";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-
-export default function Page() {
-  const [user, _setUser] = React.useState("hello");
-  React.useEffect(() => {
-    console.log(user);
-  }, []);
-  return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <StatusBar backgroundColor="white"></StatusBar>
-        <Launchpage></Launchpage>
-      </View>
-    </GestureHandlerRootView>
-  );
+import React from "react";
+import { Redirect } from "expo-router";
+export default function index() {
+  return <Redirect href={"/src/tabs"} />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-
-    backgroundColor: "#fff",
-    justifyContent: "center",
-  },
-});
