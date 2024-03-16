@@ -3,6 +3,6 @@ export type product ={
     name:string,
     descprtion:string,
     price : number ,
-    image: string
+    image?: HTMLImageElement,
 
 }

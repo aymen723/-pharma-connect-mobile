@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import { View, Text, StyleSheet, FlatList, TextInput } from "react-native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { COLORSS, Gstyles } from "../constants/theme";
@@ -9,28 +9,35 @@ const DATA: product[] = [
   {
     id: 1,
     descprtion: "test1",
-    image: "test1",
+    image: require("../../../assets/Images/image1.png"),
     name: "test1",
     price: 1,
   },
   {
     id: 2,
     descprtion: "test1",
-    image: "test1",
+    image: require("../../../assets/Images/image1.png"),
     name: "test1",
     price: 1,
   },
   {
     id: 3,
     descprtion: "test1",
-    image: "test1",
+    image: require("../../../assets/Images/image1.png"),
     name: "test1",
     price: 1,
   },
   {
     id: 4,
     descprtion: "test1",
-    image: "test1",
+    image: require("../../../assets/Images/image1.png"),
+    name: "test1",
+    price: 1,
+  },
+  {
+    id: 4,
+    descprtion: "test1",
+    image: require("../../../assets/Images/image1.png"),
     name: "test1",
     price: 1,
   },
@@ -39,8 +46,10 @@ const DATA: product[] = [
 export default function Home() {
   return (
     <View style={Gstyles.container}>
-      <StatusBar backgroundColor="whitesmoke"></StatusBar>
-      <View style={styles.searchbox}></View>
+      <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>
+      <View style={styles.searchbox}>
+        <TextInput style={Gstyles.Biginput} placeholder="Search"></TextInput>
+      </View>
       <View style={styles.productbox}>
         <View style={styles.producttitle}>
           <Text>Product of the Day </Text>
@@ -50,7 +59,11 @@ export default function Home() {
             style={{ flex: 1, height: 130 }}
             contentContainerStyle={styles.test}
             data={DATA}
+            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
+            overScrollMode="never"
             numColumns={2}
+            columnWrapperStyle={styles.test2}
             renderItem={Productcard}
           />
         </View>
@@ -61,23 +74,21 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   searchbox: {
-    flex: 0.3,
+    flex: 0.2,
+    borderColor: "red",
     borderWidth: 1,
-    borderColor: "black",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
   },
   productbox: {
-    flex: 0.7,
-    borderWidth: 1,
-    borderColor: "red",
+    flex: 0.8,
+
     alignItems: "center",
   },
   productlist: {
     flex: 0.9,
-    borderWidth: 1,
-    borderColor: "red",
+
     width: "100%",
   },
   producttitle: {
@@ -86,13 +97,14 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "flex-start",
-    borderColor: "green",
-    borderWidth: 1,
   },
   test: {
     width: "100%",
+  },
+  test2: {
     display: "flex",
-    justifyContent: "space-around",
-    alignItems: "center",
+    justifyContent: "space-evenly",
+    paddingTop: 10,
+    paddingBottom: 10,
   },
 });

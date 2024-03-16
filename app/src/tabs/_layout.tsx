@@ -13,6 +13,8 @@ export default function _layout() {
       initialRouteName="Home"
     >
       <Tabs.Screen name="Home" />
+      <Tabs.Screen name="Notification" />
+      <Tabs.Screen name="Services" />
       <Tabs.Screen name="Account" />
     </Tabs>
   );

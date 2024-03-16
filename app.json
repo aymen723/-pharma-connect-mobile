@@ -34,7 +34,8 @@
     },
     "owner": "aymen723",
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-font"
     ]
   }
 }
