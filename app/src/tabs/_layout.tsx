@@ -1,7 +1,5 @@
-import { View, Text } from "react-native";
 import React from "react";
 import { Tabs } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 
 export default function _layout() {
   return (
@@ -14,7 +12,7 @@ export default function _layout() {
     >
       <Tabs.Screen name="Home" />
       <Tabs.Screen name="Notification" />
-      <Tabs.Screen name="Services" />
+      <Tabs.Screen name="Cart" />
       <Tabs.Screen name="Account" />
     </Tabs>
   );

@@ -1,11 +1,20 @@
-import { View, Text, StyleSheet, FlatList, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { COLORSS, Gstyles } from "../constants/theme";
 import Productcard from "../Component/Productcard";
 import { product } from "../Models/models";
+import { router } from "expo-router";
+import { Search, ShoppingCart, Menu } from "lucide-react-native";
 
-const DATA: product[] = [
+export const DATA: product[] = [
   {
     id: 1,
     descprtion: "test1",
@@ -48,11 +57,27 @@ export default function Home() {
     <View style={Gstyles.container}>
       <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>
       <View style={styles.searchbox}>
-        <TextInput style={Gstyles.Biginput} placeholder="Search"></TextInput>
+        <View style={styles.inputView}>
+          <TouchableOpacity style={styles.sidebar}>
+            <Menu color={"black"} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              router.push("/src/Screens");
+            }}
+            style={Gstyles.searchinput}
+          >
+            <Search color="gray" size={20} style={{ paddingLeft: 50 }} />
+            <Text style={{ paddingLeft: 10, color: "gray" }}>Search</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.cart}>
+            <ShoppingCart color={"black"} />
+          </TouchableOpacity>
+        </View>
       </View>
       <View style={styles.productbox}>
         <View style={styles.producttitle}>
-          <Text>Product of the Day </Text>
+          <Text>Products</Text>
         </View>
         <View style={styles.productlist}>
           <FlatList
@@ -75,11 +100,8 @@ export default function Home() {
 const styles = StyleSheet.create({
   searchbox: {
     flex: 0.2,
-    borderColor: "red",
+    borderColor: "black",
     borderWidth: 1,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-start",
   },
   productbox: {
     flex: 0.8,
@@ -106,5 +128,37 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     paddingTop: 10,
     paddingBottom: 10,
+  },
+  inputView: {
+    height: "50%",
+    borderColor: "red",
+    borderWidth: 1,
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  sidebar: {
+    // borderColor: "yellow",
+    // borderWidth: 1,
+    width: "10%",
+    height: 40,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    backgroundColor: "ghostwhite",
+  },
+  cart: {
+    // borderColor: "yellow",
+    // borderWidth: 1,
+    width: "10%",
+    height: 40,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    backgroundColor: "ghostwhite",
   },
 });

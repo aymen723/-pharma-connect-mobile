@@ -68,11 +68,15 @@ export const Gstyles = StyleSheet.create({
     letterSpacing: 0.25,
     color: "white",
   },
-  Biginput: {
-    width: "85%",
+  searchinput: {
+    width: "70%",
     height: 45,
     backgroundColor: "ghostwhite",
     borderRadius: 20,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    flexDirection: "row",
   },
   container: {
     flex: 1,
