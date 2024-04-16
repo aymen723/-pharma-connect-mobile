@@ -11,7 +11,7 @@ export default function SearchHeader() {
         }}
         style={styles.backbutton}
       >
-        <ArrowLeft style={styles.backbutton} color={"black"} size={30} />
+        <ArrowLeft color={"black"} size={30} />
       </TouchableOpacity>
       <TextInput
         placeholder="Search ..."

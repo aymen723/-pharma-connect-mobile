@@ -70,7 +70,12 @@ export default function Home() {
             <Search color="gray" size={20} style={{ paddingLeft: 50 }} />
             <Text style={{ paddingLeft: 10, color: "gray" }}>Search</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.cart}>
+          <TouchableOpacity
+            onPress={() => {
+              router.push("/src/Screens/Cart");
+            }}
+            style={styles.cart}
+          >
             <ShoppingCart color={"black"} />
           </TouchableOpacity>
         </View>
@@ -82,13 +87,13 @@ export default function Home() {
         <View style={styles.productlist}>
           <FlatList
             style={{ flex: 1, height: 130 }}
-            contentContainerStyle={styles.test}
+            contentContainerStyle={styles.listscroll}
             data={DATA}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
             numColumns={2}
-            columnWrapperStyle={styles.test2}
+            columnWrapperStyle={styles.row}
             renderItem={Productcard}
           />
         </View>
@@ -99,18 +104,17 @@ export default function Home() {
 
 const styles = StyleSheet.create({
   searchbox: {
-    flex: 0.2,
-    borderColor: "black",
-    borderWidth: 1,
+    flex: 0.1,
+    // borderColor: "black",
+    // borderWidth: 1,
   },
   productbox: {
-    flex: 0.8,
+    flex: 0.9,
 
     alignItems: "center",
   },
   productlist: {
-    flex: 0.9,
-
+    flex: 1,
     width: "100%",
   },
   producttitle: {
@@ -119,18 +123,19 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "flex-start",
+    elevation: 10,
   },
-  test: {
+  listscroll: {
     width: "100%",
   },
-  test2: {
+  row: {
     display: "flex",
     justifyContent: "space-evenly",
     paddingTop: 10,
     paddingBottom: 10,
   },
   inputView: {
-    height: "50%",
+    height: "100%",
     borderColor: "red",
     borderWidth: 1,
     width: "100%",
@@ -140,8 +145,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   sidebar: {
-    // borderColor: "yellow",
-    // borderWidth: 1,
     width: "10%",
     height: 40,
     display: "flex",
@@ -151,8 +154,6 @@ const styles = StyleSheet.create({
     backgroundColor: "ghostwhite",
   },
   cart: {
-    // borderColor: "yellow",
-    // borderWidth: 1,
     width: "10%",
     height: 40,
     display: "flex",

@@ -1,10 +1,21 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { product } from "../Models/models";
+import { router } from "expo-router";
 
 export default function Productcard({ item }: { item: product }) {
   return (
-    <TouchableOpacity activeOpacity={0.8} style={styles.conatiner}>
+    <TouchableOpacity
+      onPress={() => {
+        // router.push("/src/Screens/ProductDescription");
+        router.push({
+          pathname: `/src/Screens/ProductDescription`,
+          params: item,
+        });
+      }}
+      activeOpacity={0.8}
+      style={styles.conatiner}
+    >
       <View style={styles.imagebox}>
         <Image style={styles.image} source={item.image}></Image>
       </View>

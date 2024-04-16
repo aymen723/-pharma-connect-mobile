@@ -1,19 +1,42 @@
 import React from "react";
 import { Tabs } from "expo-router";
-
+import { Home } from "lucide-react-native";
+import { Settings } from "lucide-react-native";
+import Header from "../Component/Header";
+import AccountHeader from "../Component/AccountHeader";
 export default function _layout() {
   return (
     <Tabs
-      screenOptions={{
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused }) => {
+          if (route.name == "Home") {
+            return <Home color={"black"} size={20} />;
+          } else {
+            return <Settings color={"black"} size={20} />;
+          }
+        },
+
+        tabBarActiveTintColor: "green",
+        tabBarInactiveTintColor: "gray",
         headerShown: false,
-        tabBarHideOnKeyboard: true,
-      }}
+      })}
       initialRouteName="Home"
     >
       <Tabs.Screen name="Home" />
       <Tabs.Screen name="Notification" />
       <Tabs.Screen name="Cart" />
-      <Tabs.Screen name="Account" />
+      <Tabs.Screen
+        options={{
+          headerShown: true,
+          headerStyle: { backgroundColor: "white" },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          header: (props) => <AccountHeader></AccountHeader>,
+        }}
+        name="Account"
+      />
     </Tabs>
   );
 }

@@ -12,6 +12,7 @@ const COLORSS = {
   white: "#F3F4F8",
   lightWhite: "#FAFAFC",
   Green: "#15BD92",
+  lightgreen: "#95d5b2",
 };
 
 const FONT = {
@@ -81,6 +82,8 @@ export const Gstyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORSS.maingray,
+    borderWidth: 1,
+    borderColor: "red",
   },
   whitecontainer: {
     flex: 1,
@@ -101,6 +104,13 @@ export const Gstyles = StyleSheet.create({
     borderRadius: 10,
     elevation: 3,
     backgroundColor: COLORSS.Green,
+  },
+  headerContainer: {
+    height: 60,
+    width: "100%",
+    // borderWidth: 1,
+    // borderColor: "red",
+    backgroundColor: COLORSS.maingray,
   },
 });
 
