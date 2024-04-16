@@ -14,7 +14,7 @@ import { product } from "../Models/models";
 import { router } from "expo-router";
 import { Search, ShoppingCart, Menu } from "lucide-react-native";
 
-export const DATA: product[] = [
+export const List: product[] = [
   {
     id: 1,
     descprtion: "test1",
@@ -44,7 +44,7 @@ export const DATA: product[] = [
     price: 1,
   },
   {
-    id: 4,
+    id: 5,
     descprtion: "test1",
     image: require("../../../assets/Images/image1.png"),
     name: "test1",
@@ -88,7 +88,7 @@ export default function Home() {
           <FlatList
             style={{ flex: 1, height: 130 }}
             contentContainerStyle={styles.listscroll}
-            data={DATA}
+            data={List}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"

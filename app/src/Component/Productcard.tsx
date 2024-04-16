@@ -7,7 +7,6 @@ export default function Productcard({ item }: { item: product }) {
   return (
     <TouchableOpacity
       onPress={() => {
-        // router.push("/src/Screens/ProductDescription");
         router.push({
           pathname: `/src/Screens/ProductDescription`,
           params: item,

@@ -13,6 +13,8 @@ const COLORSS = {
   lightWhite: "#FAFAFC",
   Green: "#15BD92",
   lightgreen: "#95d5b2",
+  textcolor: "#090F47",
+  purpal: "#4157FF",
 };
 
 const FONT = {
@@ -82,8 +84,8 @@ export const Gstyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORSS.maingray,
-    borderWidth: 1,
-    borderColor: "red",
+    // borderWidth: 1,
+    // borderColor: "red",
   },
   whitecontainer: {
     flex: 1,
@@ -111,6 +113,19 @@ export const Gstyles = StyleSheet.create({
     // borderWidth: 1,
     // borderColor: "red",
     backgroundColor: COLORSS.maingray,
+  },
+  BigButton: {
+    width: "80%",
+    height: 45,
+    backgroundColor: COLORSS.purpal,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  BigButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
