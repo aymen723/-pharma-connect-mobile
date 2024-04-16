@@ -52,6 +52,13 @@ export default function _layout() {
         }}
         name="Cart"
       />
+      <Stack.Screen
+        options={{
+          title: "Checkout",
+          header: (props) => <CartHeader title={"Checkout"}></CartHeader>,
+        }}
+        name="Checkout"
+      />
     </Stack>
   );
 }

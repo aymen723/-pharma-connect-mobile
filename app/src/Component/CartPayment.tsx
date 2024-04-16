@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import React from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
+import { router } from "expo-router";
 
 export default function CartPayment() {
   return (
@@ -45,7 +46,14 @@ export default function CartPayment() {
         </ScrollView>
       </View>
       <View style={styles.orderbutton}>
-        <TouchableOpacity style={Gstyles.BigButton}>
+        <TouchableOpacity
+          onPress={() => {
+            router.push({
+              pathname: "src/Screens/Checkout",
+            });
+          }}
+          style={Gstyles.BigButton}
+        >
           <Text style={Gstyles.BigButtonText}>Place Order</Text>
         </TouchableOpacity>
       </View>

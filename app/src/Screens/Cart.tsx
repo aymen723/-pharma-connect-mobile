@@ -13,6 +13,7 @@ import { List } from "../tabs/Home";
 import CartItem from "../Component/CartItem";
 import CartPayment from "../Component/CartPayment";
 import { Plus } from "lucide-react-native";
+import { router } from "expo-router";
 export default function Cart() {
   const [empty, setempty] = useState(true);
   return (
@@ -23,8 +24,15 @@ export default function Cart() {
         <>
           <View style={Styles.ContainerList}>
             <View style={Styles.additem}>
-              <Text>Items in your cart</Text>
-              <TouchableOpacity style={{ flexDirection: "row" }}>
+              <Text style={{ color: "rgba(9, 15, 71, 0.45)" }}>
+                Items in your cart
+              </Text>
+              <TouchableOpacity
+                onPress={() => {
+                  // router.back();
+                }}
+                style={{ flexDirection: "row" }}
+              >
                 <Plus color={COLORSS.purpal} size={20} />
                 <Text style={{ color: COLORSS.purpal }}>Add More</Text>
               </TouchableOpacity>
@@ -50,8 +58,6 @@ export default function Cart() {
 
 const Styles = StyleSheet.create({
   ContainerList: {
-    // borderWidth: 1,
-    // borderColor: "black",
     height: "60%",
     justifyContent: "center",
     alignItems: "center",
@@ -60,8 +66,7 @@ const Styles = StyleSheet.create({
   additem: {
     width: "90%",
     height: 30,
-    borderWidth: 1,
-    borderColor: "red",
+
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",

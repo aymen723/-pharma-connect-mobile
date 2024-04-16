@@ -23,8 +23,7 @@ export default function _layout() {
       initialRouteName="Home"
     >
       <Tabs.Screen name="Home" />
-      <Tabs.Screen name="Notification" />
-      <Tabs.Screen name="Cart" />
+      <Tabs.Screen name="Map" />
       <Tabs.Screen
         options={{
           headerShown: true,

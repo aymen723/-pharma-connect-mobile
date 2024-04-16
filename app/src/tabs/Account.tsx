@@ -96,8 +96,8 @@ const styles = StyleSheet.create({
     width: "30%",
   },
   itemcontainer: {
-    borderWidth: 1,
-    borderColor: "red",
+    // borderWidth: 1,
+    // borderColor: "red",
     height: "50%",
     alignItems: "center",
   },
