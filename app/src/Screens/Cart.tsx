@@ -16,6 +16,7 @@ import { Plus } from "lucide-react-native";
 import { router } from "expo-router";
 export default function Cart() {
   const [empty, setempty] = useState(true);
+
   return (
     <View style={Gstyles.container}>
       <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>

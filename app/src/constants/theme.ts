@@ -110,9 +110,20 @@ export const Gstyles = StyleSheet.create({
   headerContainer: {
     height: 60,
     width: "100%",
-    // borderWidth: 1,
-    // borderColor: "red",
     backgroundColor: COLORSS.maingray,
+    borderWidth: 1,
+    borderColor: "black",
+    flexDirection: "row",
+  },
+  Mapheader: {
+    height: 60,
+    backgroundColor: "rgba(52, 52, 52, 0.01)",
+    opacity: 0.7,
+    borderWidth: 1,
+    borderColor: "red",
+    zIndex: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
   BigButton: {
     width: "80%",

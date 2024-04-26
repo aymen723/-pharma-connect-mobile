@@ -1,25 +1,41 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import * as browser from "expo-web-browser";
-import google from "expo-auth-session/providers/google";
-import React, { useState } from "react";
+import * as Google from "expo-auth-session/providers/google";
+import React, { useEffect, useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
 import icon from "../../../assets/Images/image1.png";
 import { router } from "expo-router";
 import { Constants } from "expo-constants";
+import axios from "axios";
 
 browser.maybeCompleteAuthSession();
 
 export default function Signin() {
-  const [token, settoken] = useState(null);
+  const [token, settoken] = useState<string | undefined>();
 
-  const [user, steuser] = useState(null);
+  const [user, setuser] = useState(null);
 
-  // const[request , response ,promtasync] = google.useIdTokenAuthRequest({
-  //   clientId
-  // });
+  const [request, response, promptasync] = Google.useAuthRequest({
+    clientId: process.env.OUSSAMA_Client_ID,
+    androidClientId: process.env.CLIENT_ID_ANDROID,
+  });
 
-  function singup() {
-    // router.replace("/src/tabs");
+  useEffect(() => {
+    if (response?.type === "success") {
+      settoken(response.authentication?.accessToken);
+      token && GetUser();
+    }
+  }, [response, token]);
+
+  async function GetUser() {
+    const res = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+      headers: {
+        Authorization: "Bearer" + token,
+      },
+    });
+
+    const user = res.json();
+    setuser(user);
   }
   return (
     <View style={Gstyles.whitecontainercenter}>
@@ -36,7 +52,7 @@ export default function Signin() {
         </Text>
         <TouchableOpacity
           onPress={() => {
-            singup();
+            promptasync();
           }}
           style={Gstyles.loginbutton}
         >

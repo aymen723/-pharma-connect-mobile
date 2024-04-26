@@ -1,9 +1,17 @@
-import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import { View, Text, StyleSheet, Button } from "react-native";
+import React, { useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
 import Delivery from "../Component/Delivery";
+import * as WebBrowser from "expo-web-browser";
 
 export default function Checkout() {
+  const [result, setResult] = useState(null);
+
+  const _handlePressButtonAsync = async () => {
+    const result = await WebBrowser.openBrowserAsync("https://expo.dev");
+    setResult(result);
+    console.log(result);
+  };
   return (
     <View style={Gstyles.container}>
       <View
@@ -33,6 +41,7 @@ export default function Checkout() {
       </View>
       <View style={styles.checkoutcontainer}>
         <Text>Payment method</Text>
+        <Button title="Open WebBrowser" onPress={_handlePressButtonAsync} />
       </View>
     </View>
   );

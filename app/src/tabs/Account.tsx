@@ -7,9 +7,15 @@ import {
   FilePenLine,
   Bolt,
   ChevronRight,
+  LogOut,
 } from "lucide-react-native";
+import { router } from "expo-router";
 
 export default function Account() {
+  function Logout() {
+    console.log("here");
+    router.replace("/src/landingpages/Signin");
+  }
   return (
     <View style={Gstyles.container}>
       <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>
@@ -36,7 +42,7 @@ export default function Account() {
           </View>
           <View style={styles.itemcontent}>
             <Text>Edit Profile</Text>
-            <ChevronRight color={"black"} size={30} />
+            <ChevronRight color={"gray"} size={26} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.items}>
@@ -45,7 +51,7 @@ export default function Account() {
           </View>
           <View style={styles.itemcontent}>
             <Text>My orders</Text>
-            <ChevronRight color={"black"} size={30} />
+            <ChevronRight color={"gray"} size={26} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.items}>
@@ -54,7 +60,7 @@ export default function Account() {
           </View>
           <View style={styles.itemcontent}>
             <Text>Settings</Text>
-            <ChevronRight color={"black"} size={30} />
+            <ChevronRight color={"gray"} size={26} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.items}>
@@ -63,7 +69,16 @@ export default function Account() {
           </View>
           <View style={styles.itemcontent}>
             <Text>Billing</Text>
-            <ChevronRight color={"black"} size={30} />
+            <ChevronRight color={"gray"} size={26} />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={Logout} style={styles.items}>
+          <View style={styles.itemicon}>
+            <LogOut color={COLORSS.lightgreen} size={30} />
+          </View>
+          <View style={styles.itemcontent}>
+            <Text>Sign Out</Text>
+            <ChevronRight color={"gray"} size={26} />
           </View>
         </TouchableOpacity>
       </View>

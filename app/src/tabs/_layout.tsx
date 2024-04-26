@@ -4,7 +4,8 @@ import { Home } from "lucide-react-native";
 import { Settings } from "lucide-react-native";
 import Header from "../Component/Header";
 import AccountHeader from "../Component/AccountHeader";
-export default function _layout() {
+import MapHeader from "../Component/MapHeader";
+export default function HomeLayout() {
   return (
     <Tabs
       screenOptions={({ route }) => ({
@@ -23,7 +24,18 @@ export default function _layout() {
       initialRouteName="Home"
     >
       <Tabs.Screen name="Home" />
-      <Tabs.Screen name="Map" />
+      <Tabs.Screen
+        name="Map"
+        options={{
+          headerShown: true,
+          headerStyle: { backgroundColor: "white" },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          header: (props) => <MapHeader></MapHeader>,
+        }}
+      />
       <Tabs.Screen
         options={{
           headerShown: true,

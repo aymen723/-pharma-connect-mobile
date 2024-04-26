@@ -13,6 +13,8 @@ import Productcard from "../Component/Productcard";
 import { product } from "../Models/models";
 import { router } from "expo-router";
 import { Search, ShoppingCart, Menu } from "lucide-react-native";
+import { DrawerActions } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/core";
 
 export const List: product[] = [
   {
@@ -50,15 +52,29 @@ export const List: product[] = [
     name: "test1",
     price: 1,
   },
+  {
+    id: 6,
+    descprtion: "test1",
+    image: "../../../assets/Images/image1.png",
+    name: "test1",
+    price: 1,
+  },
 ];
 
 export default function Home() {
+  const navigation = useNavigation();
+
   return (
     <View style={Gstyles.container}>
       <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>
       <View style={styles.searchbox}>
         <View style={styles.inputView}>
-          <TouchableOpacity style={styles.sidebar}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.dispatch(DrawerActions.openDrawer());
+            }}
+            style={styles.sidebar}
+          >
             <Menu color={"black"} />
           </TouchableOpacity>
           <TouchableOpacity

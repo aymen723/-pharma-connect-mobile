@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const [user, setuser] = useState<string>("test");
+
+  async function CheckUser() {
+    const value = await AsyncStorage.getItem("@user");
+  }
+  useEffect(() => {});
 
   function test() {
     if (user.match("test")) {

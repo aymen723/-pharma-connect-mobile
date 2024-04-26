@@ -8,29 +8,48 @@ import {
 } from "react-native";
 import React from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
-import { useLocalSearchParams } from "expo-router";
+import { useNavigation, useRouter, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
+import { product } from "../Models/models";
 
 export default function ProductDescription() {
-  const { item } = useLocalSearchParams<{ item: string }>();
+  const navigation = useNavigation();
+  const router = useRouter();
+  const params = useLocalSearchParams();
+  // const imagePath = require(params.image);
 
-  function test() {
-    console.log(item);
-  }
   return (
-    <View style={Gstyles.container}>
+    <ScrollView style={styles.Scroll}>
       <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>
-
-      <ScrollView>
-        <View>
-          <Text>Test</Text>
-        </View>
-        <View>
-          <Image></Image>
-        </View>
-      </ScrollView>
-    </View>
+      <View style={styles.ProductImage}>
+        <Image></Image>
+      </View>
+      <View style={styles.ProductDescription}>
+        <Text>Descritop</Text>
+      </View>
+      <View style={styles.ProductContent}>
+        <Text>Descritop</Text>
+      </View>
+    </ScrollView>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  ProductImage: {
+    width: "100%",
+    height: 250,
+    borderWidth: 1,
+    borderColor: "red",
+  },
+  ProductDescription: {
+    width: "100%",
+    height: 400,
+    borderWidth: 1,
+    borderColor: "black",
+  },
+  ProductContent: {},
+  Scroll: {
+    borderWidth: 10,
+    borderColor: "green",
+  },
+});

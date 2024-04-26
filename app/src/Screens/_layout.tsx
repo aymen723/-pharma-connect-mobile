@@ -5,7 +5,7 @@ import SearchHeader from "../Component/SearchHeader";
 import Header from "../Component/Header";
 import CartHeader from "../Component/CartHeader";
 
-export default function _layout() {
+export default function ScreensLayout() {
   return (
     <Stack
       screenOptions={{
@@ -35,7 +35,6 @@ export default function _layout() {
       />
       <Stack.Screen
         options={{
-          title: "Search",
           headerStyle: { backgroundColor: "white" },
           headerTintColor: "#fff",
           headerTitleStyle: {

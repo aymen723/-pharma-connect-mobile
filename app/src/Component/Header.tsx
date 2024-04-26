@@ -15,6 +15,11 @@ export default function Header() {
       >
         <ArrowLeft color={"black"} size={30} />
       </TouchableOpacity>
+      <View style={styles.Producttitle}>
+        <Text
+          style={{ color: "black", fontSize: 20, fontWeight: "bold" }}
+        ></Text>
+      </View>
     </View>
   );
 }
@@ -26,7 +31,14 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    // borderWidth: 1,
-    // borderColor: "black",
+    borderWidth: 1,
+    borderColor: "black",
+  },
+  Producttitle: {
+    borderWidth: 1,
+    borderColor: "red",
+    width: "auto",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
