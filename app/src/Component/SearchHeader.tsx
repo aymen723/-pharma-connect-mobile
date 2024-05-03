@@ -1,8 +1,11 @@
 import { View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { ArrowLeft } from "lucide-react-native";
 import { router } from "expo-router";
-export default function SearchHeader() {
+export default function SearchHeader({ SearchValue, SearchInput }) {
+  function hundelSearch(e) {
+    SearchInput(e);
+  }
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -16,6 +19,8 @@ export default function SearchHeader() {
       <TextInput
         placeholder="Search ..."
         style={styles.Searchinput}
+        value={SearchValue}
+        onChangeText={hundelSearch}
       ></TextInput>
     </View>
   );

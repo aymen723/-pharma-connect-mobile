@@ -7,28 +7,52 @@ import {
   Image,
 } from "react-native";
 import React from "react";
-import { COLORSS, Gstyles } from "../constants/theme";
+import { COLORSS } from "../constants/theme";
 import { useNavigation, useRouter, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { product } from "../Models/models";
+import { ProductRespData } from "../client/types/responses/StockResponses";
+import { decrement, increment } from "../Redux/counterSlice";
+import { useAppDispatch, useAppSelector } from "../Redux/hooks";
 
 export default function ProductDescription() {
   const navigation = useNavigation();
   const router = useRouter();
   const params = useLocalSearchParams();
-  // const imagePath = require(params.image);
+
+  const ProductList = useAppSelector((state) => state.ProductsList);
+  const dispatch = useAppDispatch();
+
+  function hundelcart() {
+    // const object: ProductRespData = {
+    //   id: params.id,
+    //   name: params.name,
+    //   description: params.description,
+    //   price: params.price,
+    //   barcode: params.barcode,
+    //   tags: params.tags,
+    // };
+    // increment(params as ProductRespData);
+
+    console.log(params);
+  }
 
   return (
     <ScrollView style={styles.Scroll}>
       <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>
       <View style={styles.ProductImage}>
+        <Button
+          title="add to cart"
+          onPress={() => {
+            hundelcart();
+          }}
+        ></Button>
         <Image></Image>
       </View>
       <View style={styles.ProductDescription}>
-        <Text>Descritop</Text>
+        <Text>{params.name}</Text>
       </View>
       <View style={styles.ProductContent}>
-        <Text>Descritop</Text>
+        <Text style={{ fontSize: 12 }}>{params.description}</Text>
       </View>
     </ScrollView>
   );

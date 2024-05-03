@@ -15,13 +15,13 @@ import CartPayment from "../Component/CartPayment";
 import { Plus } from "lucide-react-native";
 import { router } from "expo-router";
 export default function Cart() {
-  const [empty, setempty] = useState(true);
+  const [NotEmpty, setNotEmpty] = useState(true);
 
   return (
     <View style={Gstyles.container}>
       <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>
 
-      {empty ? (
+      {NotEmpty ? (
         <>
           <View style={Styles.ContainerList}>
             <View style={Styles.additem}>
@@ -49,8 +49,24 @@ export default function Cart() {
           <CartPayment></CartPayment>
         </>
       ) : (
-        <View style={Gstyles.container}>
-          <Text>azda</Text>
+        <View style={Styles.ContainerList}>
+          <View style={Styles.additem}>
+            <Text style={{ color: "rgba(9, 15, 71, 0.45)" }}>
+              Items in your cart
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                // router.back();
+              }}
+              style={{ flexDirection: "row" }}
+            >
+              <Plus color={COLORSS.purpal} size={20} />
+              <Text style={{ color: COLORSS.purpal }}>Add More</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={Styles.emptybox}>
+            <Text style={{ color: "gray" }}>No Item in the Cart</Text>
+          </View>
         </View>
       )}
     </View>
@@ -60,7 +76,7 @@ export default function Cart() {
 const Styles = StyleSheet.create({
   ContainerList: {
     height: "60%",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
   },
@@ -71,5 +87,11 @@ const Styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  emptybox: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: "100%",
   },
 });

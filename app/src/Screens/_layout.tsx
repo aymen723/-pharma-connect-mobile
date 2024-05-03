@@ -20,7 +20,7 @@ export default function ScreensLayout() {
     >
       <Stack.Screen
         options={{
-          // https://reactnavigation.org/docs/headers#setting-the-header-title
+          headerShown: false,
           title: "Search",
           // https://reactnavigation.org/docs/headers#adjusting-header-styles
           headerStyle: { backgroundColor: "white" },
@@ -29,7 +29,7 @@ export default function ScreensLayout() {
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          header: (props) => <SearchHeader></SearchHeader>,
+          // header: (props) => <SearchHeader></SearchHeader>,
         }}
         name="Search"
       />

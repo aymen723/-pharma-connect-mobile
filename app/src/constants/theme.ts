@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
+export const deviceWidth = Dimensions.get("window").width;
 
 const COLORSS = {
   primary: "#312651",
@@ -84,8 +85,6 @@ export const Gstyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORSS.maingray,
-    // borderWidth: 1,
-    // borderColor: "red",
   },
   whitecontainer: {
     flex: 1,
@@ -111,19 +110,19 @@ export const Gstyles = StyleSheet.create({
     height: 60,
     width: "100%",
     backgroundColor: COLORSS.maingray,
-    borderWidth: 1,
-    borderColor: "black",
+    // borderWidth: 1,
+    // borderColor: "black",
     flexDirection: "row",
   },
   Mapheader: {
     height: 60,
-    backgroundColor: "rgba(52, 52, 52, 0.01)",
+    backgroundColor: COLORSS.maingray,
     opacity: 0.7,
-    borderWidth: 1,
-    borderColor: "red",
+
     zIndex: 5,
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
+    flexDirection: "row",
   },
   BigButton: {
     width: "80%",

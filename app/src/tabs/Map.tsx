@@ -1,27 +1,48 @@
-import {
-  View,
-  StyleSheet,
-  Text,
-  TextInput,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Gstyles } from "../constants/theme";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import * as Location from "expo-location";
 import { LocationObject } from "expo-location";
-import { StatusBar } from "expo-status-bar";
-import { listmarkers, pharmacyData } from "./markers";
+import {
+  fetchPharmaciesByFilter,
+  fetchPharmacyById,
+} from "../client/api/stockService/pharmacyApi";
+import { PharmacyRespData } from "../client/types/responses/StockResponses";
+import { Page } from "../client/types/responses";
+import MapHeader from "../Component/MapHeader";
+import { PharmacyFilterParams } from "../client/types/requests/PharmacyRequests";
+import { Button } from "@rneui/base";
+import FilterModal from "../Component/FilterModal";
+import { Text } from "react-native";
+
 export default function Map() {
   const [loc, setLocation] = useState<LocationObject | undefined>();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [region, setregion] = useState<Region | undefined>();
+  const [Pharmcaies, SetPharmacies] = useState<
+    Page<PharmacyRespData> | undefined
+  >();
+  const [Range, SetRange] = useState(0);
+  const [isModalVisible, setModalVisible] = useState<boolean>(false);
+  const [Search, SetSearch] = useState<string | undefined>();
+  const [Pharmacy, SetPharmacy] = useState<PharmacyRespData | undefined>();
+  const handleModalToggle = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   function Regionchange(e: Region) {
-    // console.log(e);
     setregion(e);
   }
+
+  function HundelPharmcay(item: PharmacyRespData) {
+    console.log(item);
+    fetchPharmacyById(item.id).then((res) => {
+      console.log(res.data);
+      SetPharmacy(res.data);
+    });
+  }
+
   async function GetLocation() {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -35,21 +56,50 @@ export default function Map() {
     console.log(location.coords.longitude);
     setLocation(location);
   }
-
-  const tokyoRegion = {
-    latitude: 35.6762,
-    longitude: 139.6503,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
-  };
-
   useEffect(() => {
     GetLocation();
+    fetchPharmaciesByFilter()
+      .then((res) => {
+        console.log(res.data);
+        console.log("here the lenght", res.data.numberOfElements);
+        SetPharmacies(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
+
+  function test() {
+    const Filterobj: PharmacyFilterParams = {
+      name: Search,
+      range: Range,
+    };
+    console.log(Filterobj);
+    fetchPharmaciesByFilter(Filterobj)
+      .then((res) => {
+        console.log(res.data);
+        console.log("here the lenght", res.data.numberOfElements);
+        SetPharmacies(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   return (
     <>
       {loc ? (
         <View style={Gstyles.container}>
+          <MapHeader
+            statechnage={SetSearch}
+            onModalToggle={handleModalToggle}
+          />
+          <Button
+            title={"test api "}
+            onPress={() => {
+              test();
+            }}
+          ></Button>
           <MapView
             initialRegion={{
               latitude: loc.coords.latitude,
@@ -60,6 +110,7 @@ export default function Map() {
             region={region}
             onRegionChangeComplete={(e) => {
               Regionchange(e);
+              // console.log(e);
             }}
             style={styles.map}
             provider={PROVIDER_GOOGLE}
@@ -68,23 +119,45 @@ export default function Map() {
             showsBuildings
             mapType={"standard"}
           >
-            {pharmacyData.map((item, index) => {
-              return (
-                <Marker
-                  coordinate={item}
-                  key={index}
-                  onPress={() => {}}
-                  title={item.title}
-                  description="test"
-                  icon={require("../../../assets/Images/download.png")}
-                />
-              );
-            })}
+            {Pharmcaies
+              ? Pharmcaies.content.map((item: PharmacyRespData) => {
+                  return (
+                    <Marker
+                      coordinate={{
+                        latitude: item.location.coordinates.y,
+                        longitude: item.location.coordinates.x,
+                      }}
+                      key={item.id}
+                      onPress={() => {
+                        HundelPharmcay(item);
+                      }}
+                      title={item.name}
+                      icon={require("../../../assets/Images/download.png")}
+                    >
+                      {/* <Pill color={"green"} size={25} /> */}
+                    </Marker>
+                  );
+                })
+              : null}
           </MapView>
+
+          <FilterModal
+            Range={SetRange}
+            Visible={setModalVisible}
+            Statevisible={isModalVisible}
+          ></FilterModal>
+          <View style={Pharmcystyles.container}>
+            <Text>azdadza</Text>
+          </View>
         </View>
       ) : (
-        <View style={Gstyles.container}>
-          <ActivityIndicator size={"large"}></ActivityIndicator>
+        <View
+          style={[
+            Gstyles.container,
+            { justifyContent: "center", alignItems: "center" },
+          ]}
+        >
+          <ActivityIndicator color="green" size={"large"}></ActivityIndicator>
         </View>
       )}
     </>
@@ -95,5 +168,15 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
+  },
+});
+
+const Pharmcystyles = StyleSheet.create({
+  container: {
+    width: "85%",
+    height: 200,
+    borderRadius: 30,
+    backgroundColor: "white",
+    elevation: 10,
   },
 });

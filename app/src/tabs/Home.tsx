@@ -5,68 +5,58 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
+  Button,
+  ScrollView,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { COLORSS, Gstyles } from "../constants/theme";
 import Productcard from "../Component/Productcard";
-import { product } from "../Models/models";
 import { router } from "expo-router";
 import { Search, ShoppingCart, Menu } from "lucide-react-native";
 import { DrawerActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/core";
+import { fetchProductsByFilter } from "../client/api/stockService/productApi";
+import { fetchTagsByFilter } from "../client/api/stockService/tagApi";
 
-export const List: product[] = [
-  {
-    id: 1,
-    descprtion: "test1",
-    image: require("../../../assets/Images/image1.png"),
-    name: "test1",
-    price: 1,
-  },
-  {
-    id: 2,
-    descprtion: "test1",
-    image: require("../../../assets/Images/image1.png"),
-    name: "test1",
-    price: 1,
-  },
-  {
-    id: 3,
-    descprtion: "test1",
-    image: require("../../../assets/Images/image1.png"),
-    name: "test1",
-    price: 1,
-  },
-  {
-    id: 4,
-    descprtion: "test1",
-    image: require("../../../assets/Images/image1.png"),
-    name: "test1",
-    price: 1,
-  },
-  {
-    id: 5,
-    descprtion: "test1",
-    image: require("../../../assets/Images/image1.png"),
-    name: "test1",
-    price: 1,
-  },
-  {
-    id: 6,
-    descprtion: "test1",
-    image: "../../../assets/Images/image1.png",
-    name: "test1",
-    price: 1,
-  },
-];
+import Tag from "../Component/Tag";
+import { Page } from "../client/types/responses";
+import {
+  ProductRespData,
+  TagRespData,
+} from "../client/types/responses/StockResponses";
+import axios from "axios";
 
 export default function Home() {
+  const [products, Setproducts] = useState<Page<ProductRespData> | undefined>();
+  const [Tags, setTags] = useState<Page<TagRespData> | undefined>();
   const navigation = useNavigation();
+  const [selectedTag, setselectedTag] = useState<TagRespData | undefined>();
+
+  useEffect(() => {
+    fetchProductsByFilter()
+      .then((res) => {
+        Setproducts(res.data);
+        console.log("here is a list of products", res.data);
+      })
+      .catch((err) => {
+        console.log("here error in products func", err);
+      });
+
+    fetchTagsByFilter()
+      .then((res) => {
+        console.log("here is a list of Tags", res.data);
+        setTags(res.data);
+      })
+      .catch((err) => {
+        console.log("here error in tags func", err);
+      });
+  }, []);
 
   return (
     <View style={Gstyles.container}>
-      <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>
+      <StatusBar backgroundColor={"white"}></StatusBar>
       <View style={styles.searchbox}>
         <View style={styles.inputView}>
           <TouchableOpacity
@@ -96,21 +86,48 @@ export default function Home() {
           </TouchableOpacity>
         </View>
       </View>
+
       <View style={styles.productbox}>
-        <View style={styles.producttitle}>
-          <Text>Products</Text>
+        <View style={styles.TagContainer}>
+          <ScrollView
+            horizontal={true}
+            style={{ width: "100%", height: "100%" }}
+            contentContainerStyle={{ alignItems: "center" }}
+            showsHorizontalScrollIndicator={false}
+          >
+            {Tags ? (
+              Tags.content.map((item) => {
+                return <Tag key={item.id} item={item}></Tag>;
+              })
+            ) : (
+              <View
+                style={{
+                  width: 400,
+                  height: "100%",
+                  justifyContent: "center",
+                }}
+              >
+                <ActivityIndicator
+                  color="green"
+                  size={"large"}
+                ></ActivityIndicator>
+              </View>
+            )}
+          </ScrollView>
         </View>
+
         <View style={styles.productlist}>
           <FlatList
             style={{ flex: 1, height: 130 }}
             contentContainerStyle={styles.listscroll}
-            data={List}
+            data={products?.content}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
             numColumns={2}
             columnWrapperStyle={styles.row}
             renderItem={Productcard}
+            pagingEnabled={true}
           />
         </View>
       </View>
@@ -123,6 +140,7 @@ const styles = StyleSheet.create({
     flex: 0.1,
     // borderColor: "black",
     // borderWidth: 1,
+    backgroundColor: "white",
   },
   productbox: {
     flex: 0.9,
@@ -133,13 +151,10 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  producttitle: {
+  TagContainer: {
+    width: "100%",
     flex: 0.1,
-    width: "85%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    elevation: 10,
+    backgroundColor: "white",
   },
   listscroll: {
     width: "100%",
