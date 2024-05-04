@@ -41,12 +41,23 @@
     "owner": "aymen723",
     "plugins": [
       "expo-router",
-      "expo-font",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Montserrat.ttf",
+            "./assets/fonts/Montserrat-Italic.ttf"
+          ]
+        }
+      ],
       [
         "expo-location",
         {
           "locationAlwaysAndWhenInUsePermission": "Allow Pharmaconnect to use your location."
         }
+      ],
+      [
+        "@react-native-google-signin/google-signin"
       ]
     ]
   }

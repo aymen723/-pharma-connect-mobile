@@ -19,23 +19,6 @@ export default function ProductDescription() {
   const router = useRouter();
   const params = useLocalSearchParams();
 
-  const ProductList = useAppSelector((state) => state.ProductsList);
-  const dispatch = useAppDispatch();
-
-  function hundelcart() {
-    // const object: ProductRespData = {
-    //   id: params.id,
-    //   name: params.name,
-    //   description: params.description,
-    //   price: params.price,
-    //   barcode: params.barcode,
-    //   tags: params.tags,
-    // };
-    // increment(params as ProductRespData);
-
-    console.log(params);
-  }
-
   return (
     <ScrollView style={styles.Scroll}>
       <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>

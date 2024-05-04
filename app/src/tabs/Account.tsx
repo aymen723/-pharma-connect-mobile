@@ -14,7 +14,7 @@ import { router } from "expo-router";
 export default function Account() {
   function Logout() {
     console.log("here");
-    router.replace("/src/landingpages/Signin");
+    router.replace("/src/(auth)'/Signin");
   }
   return (
     <View style={Gstyles.container}>

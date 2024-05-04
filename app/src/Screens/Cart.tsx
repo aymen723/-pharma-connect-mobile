@@ -8,12 +8,13 @@ import {
 import React, { useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
 import { StatusBar } from "expo-status-bar";
-import { product } from "../Models/models";
 import { List } from "../tabs/Home";
 import CartItem from "../Component/CartItem";
 import CartPayment from "../Component/CartPayment";
 import { Plus } from "lucide-react-native";
 import { router } from "expo-router";
+import { ProductRespData } from "../client/types/responses/StockResponses";
+
 export default function Cart() {
   const [NotEmpty, setNotEmpty] = useState(true);
 

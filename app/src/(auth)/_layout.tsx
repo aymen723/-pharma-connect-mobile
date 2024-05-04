@@ -8,8 +8,8 @@ export default function StackLayout() {
         headerShown: false,
       }}
     >
+      <Stack.Screen name="Onboarding" />
       <Stack.Screen name="Signin" />
-      <Stack.Screen name="Launchpage" />
     </Stack>
   );
 }

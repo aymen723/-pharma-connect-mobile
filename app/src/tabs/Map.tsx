@@ -9,9 +9,9 @@ import {
   fetchPharmacyById,
 } from "../client/api/stockService/pharmacyApi";
 import { PharmacyRespData } from "../client/types/responses/StockResponses";
+import { PharmacyFilterParams } from "../client/types/requests/PharmacyRequests";
 import { Page } from "../client/types/responses";
 import MapHeader from "../Component/MapHeader";
-import { PharmacyFilterParams } from "../client/types/requests/PharmacyRequests";
 import { Button } from "@rneui/base";
 import FilterModal from "../Component/FilterModal";
 import { Text } from "react-native";
@@ -43,6 +43,7 @@ export default function Map() {
     });
   }
 
+  
   async function GetLocation() {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -56,6 +57,8 @@ export default function Map() {
     console.log(location.coords.longitude);
     setLocation(location);
   }
+
+  
   useEffect(() => {
     GetLocation();
     fetchPharmaciesByFilter()
