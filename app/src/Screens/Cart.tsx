@@ -8,15 +8,19 @@ import {
 import React, { useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
 import { StatusBar } from "expo-status-bar";
-import { List } from "../tabs/Home";
 import CartItem from "../Component/CartItem";
 import CartPayment from "../Component/CartPayment";
-import { Plus } from "lucide-react-native";
 import { router } from "expo-router";
 import { ProductRespData } from "../client/types/responses/StockResponses";
+import { useCartStore } from "../zustand/store";
 
 export default function Cart() {
   const [NotEmpty, setNotEmpty] = useState(true);
+  const { cart, deleteitem } = useCartStore();
+
+  const renderitem = ({ item }: { item: ProductRespData }) => {
+    return <CartItem item={item} key={item.id} />;
+  };
 
   return (
     <View style={Gstyles.container}>
@@ -27,7 +31,7 @@ export default function Cart() {
           <View style={Styles.ContainerList}>
             <View style={Styles.additem}>
               <Text style={{ color: "rgba(9, 15, 71, 0.45)" }}>
-                Items in your cart
+                {cart.length} Items in your cart
               </Text>
               <TouchableOpacity
                 onPress={() => {
@@ -35,16 +39,17 @@ export default function Cart() {
                 }}
                 style={{ flexDirection: "row" }}
               >
-                <Plus color={COLORSS.purpal} size={20} />
+                {/* <Plus color={COLORSS.purpal} size={20} /> */}
                 <Text style={{ color: COLORSS.purpal }}>Add More</Text>
               </TouchableOpacity>
             </View>
+            <Text>zdzdz</Text>
             <FlatList
-              data={List}
+              data={cart}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               overScrollMode="never"
-              renderItem={CartItem}
+              renderItem={renderitem}
             />
           </View>
           <CartPayment></CartPayment>
@@ -61,7 +66,7 @@ export default function Cart() {
               }}
               style={{ flexDirection: "row" }}
             >
-              <Plus color={COLORSS.purpal} size={20} />
+              {/* <Plus color={COLORSS.purpal} size={20} /> */}
               <Text style={{ color: COLORSS.purpal }}>Add More</Text>
             </TouchableOpacity>
           </View>

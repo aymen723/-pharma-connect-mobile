@@ -5,12 +5,10 @@ const COLORSS = {
   primary: "#312651",
   secondary: "#444262",
   tertiary: "#FF7754",
-
   gray: "#83829A",
   gray2: "#C1C0C8",
-  maingray: "#E6E4E6",
-
-  white: "#F3F4F8",
+  maingray: "#f5f5fd",
+  white: "white",
   lightWhite: "#FAFAFC",
   Green: "#15BD92",
   lightgreen: "#95d5b2",
@@ -109,10 +107,10 @@ export const Gstyles = StyleSheet.create({
   headerContainer: {
     height: 60,
     width: "100%",
-    backgroundColor: COLORSS.maingray,
-    // borderWidth: 1,
-    // borderColor: "black",
+
+    backgroundColor: COLORSS.white,
     flexDirection: "row",
+    justifyContent: "space-between",
   },
   Mapheader: {
     height: 60,
@@ -131,6 +129,7 @@ export const Gstyles = StyleSheet.create({
     borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
+    ...SHADOWS.small,
   },
   BigButtonText: {
     color: "white",
@@ -139,4 +138,57 @@ export const Gstyles = StyleSheet.create({
   },
 });
 
-export { COLORSS, FONT, SIZES, SHADOWS };
+const Tagcolors = [
+  {
+    id: 1,
+    name: "collyre",
+    color: "#15BD92",
+  },
+  {
+    id: 2,
+    name: "insulin",
+    color: "#E679A3",
+  },
+  {
+    id: 3,
+    name: "oral",
+    color: "#FFB347",
+  },
+  {
+    id: 4,
+    name: "200ml",
+    color: "#6A5ACD",
+  },
+  {
+    id: 5,
+    name: "30ml",
+    color: "#FFD700",
+  },
+  {
+    id: 6,
+    name: "pilules",
+    color: "#FF7F50",
+  },
+  {
+    id: 7,
+    name: "liquide",
+    color: "#4682B4",
+  },
+  {
+    id: 8,
+    name: "comprimée",
+    color: "#8A2BE2",
+  },
+  {
+    id: 9,
+    name: "10mg",
+    color: "#20B2AA",
+  },
+  {
+    id: 10,
+    name: "solide",
+    color: "#BC8F8F",
+  },
+];
+
+export { Tagcolors, COLORSS, FONT, SIZES, SHADOWS };

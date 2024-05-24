@@ -58,6 +58,14 @@ export default function ScreensLayout() {
         }}
         name="Checkout"
       />
+
+      <Stack.Screen
+        options={{
+          title: "Checkout",
+          headerShown: false,
+        }}
+        name="MapSearch"
+      />
     </Stack>
   );
 }

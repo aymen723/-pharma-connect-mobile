@@ -2,19 +2,16 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
 import { StatusBar } from "expo-status-bar";
-import {
-  ListOrdered,
-  FilePenLine,
-  Bolt,
-  ChevronRight,
-  LogOut,
-} from "lucide-react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Entypo from "@expo/vector-icons/Entypo";
+
 import { router } from "expo-router";
 
 export default function Account() {
   function Logout() {
     console.log("here");
-    router.replace("/src/(auth)'/Signin");
+    router.replace("src/(auth)/Signin");
   }
   return (
     <View style={Gstyles.container}>
@@ -38,47 +35,47 @@ export default function Account() {
       <View style={styles.itemcontainer}>
         <TouchableOpacity style={styles.items}>
           <View style={styles.itemicon}>
-            <FilePenLine color={COLORSS.lightgreen} size={30} />
+            <AntDesign name="menuunfold" size={24} color="black" />
           </View>
           <View style={styles.itemcontent}>
             <Text>Edit Profile</Text>
-            <ChevronRight color={"gray"} size={26} />
+            <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.items}>
           <View style={styles.itemicon}>
-            <ListOrdered color={COLORSS.lightgreen} size={30} />
+            <MaterialIcons name="payment" size={24} color="black" />
           </View>
           <View style={styles.itemcontent}>
             <Text>My orders</Text>
-            <ChevronRight color={"gray"} size={26} />
+            <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.items}>
           <View style={styles.itemicon}>
-            <Bolt color={COLORSS.lightgreen} size={30} />
+            <AntDesign name="setting" size={24} color="black" />
           </View>
           <View style={styles.itemcontent}>
             <Text>Settings</Text>
-            <ChevronRight color={"gray"} size={26} />
+            <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity style={styles.items}>
           <View style={styles.itemicon}>
-            <Bolt color={COLORSS.lightgreen} size={30} />
+            {/* <Bolt color={COLORSS.lightgreen} size={30} /> */}
           </View>
           <View style={styles.itemcontent}>
             <Text>Billing</Text>
-            <ChevronRight color={"gray"} size={26} />
+            <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
           </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={Logout} style={styles.items}>
           <View style={styles.itemicon}>
-            <LogOut color={COLORSS.lightgreen} size={30} />
+            <AntDesign name="logout" size={24} color="black" />
           </View>
           <View style={styles.itemcontent}>
             <Text>Sign Out</Text>
-            <ChevronRight color={"gray"} size={26} />
+            <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
           </View>
         </TouchableOpacity>
       </View>

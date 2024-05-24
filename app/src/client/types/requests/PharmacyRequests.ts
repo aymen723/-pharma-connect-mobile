@@ -5,4 +5,8 @@ export type PharmacyFilterParams = {
   y?: number;
   page?: number | string;
   pageSize?: number | string;
+  tags?: number[] | string[] | number | string;
+  ids?: number[] | string[] | number | string;
+  products?: number[] | string[] | number | string;
+  search?: string;
 };

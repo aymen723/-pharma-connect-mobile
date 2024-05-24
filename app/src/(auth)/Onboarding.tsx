@@ -1,6 +1,6 @@
 import React from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
-import { ChevronRight } from "lucide-react-native";
+import Entypo from "@expo/vector-icons/Entypo";
 import {
   FlatList,
   StyleSheet,
@@ -170,7 +170,7 @@ export default function Onboarding() {
           }}
           style={Styles.FooterButton}
         >
-          <ChevronRight color={COLORSS.Green} size={30} />
+          <Entypo name="chevron-right" size={30} color={COLORSS.Green} />
         </TouchableOpacity>
       </View>
     </View>

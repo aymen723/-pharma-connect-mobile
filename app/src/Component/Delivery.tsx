@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import { COLORSS } from "../constants/theme";
 import AddressItem from "./AddressItem";
 import type { Address } from "../Models/models";
-import { Plus } from "lucide-react-native";
+// import { Plus } from "lucide-react-native";
 export default function Delivery() {
   const [empty, setempty] = useState(true);
   return (
@@ -26,7 +26,7 @@ export default function Delivery() {
           }}
           style={{ flexDirection: "row" }}
         >
-          <Plus color={COLORSS.purpal} size={20} />
+          {/* <Plus color={COLORSS.purpal} size={20} /> */}
           <Text style={{ color: COLORSS.purpal }}>Add More</Text>
         </TouchableOpacity>
       </View>

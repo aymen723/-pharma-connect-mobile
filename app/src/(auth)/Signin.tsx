@@ -1,4 +1,11 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Button,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import * as browser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import React, { useEffect, useState } from "react";
@@ -9,17 +16,13 @@ import { router } from "expo-router";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 
-import {
-  GoogleSignin,
-  statusCodes,
-} from "@react-native-google-signin/google-signin";
+// import {
+//   GoogleSignin,
+//   GoogleSigninButton,
+//   statusCodes,
+// } from "@react-native-google-signin/google-signin";
 
 browser.maybeCompleteAuthSession();
-
-GoogleSignin.configure({
-  webClientId: process.env.OUSSAMA_Client_ID, // client ID of type WEB for your server. Required to get the `idToken` on the user object, and for offline access.
-  androidClientId: process.env.CLIENT_ID_ANDROID,
-});
 
 export default function Signin() {
   const [token, settoken] = useState<string | undefined>();
@@ -29,11 +32,21 @@ export default function Signin() {
   const [userinfo, setuserinfo] = useState();
 
   const [request, response, promptasync] = Google.useAuthRequest({
-    clientId: process.env.OUSSAMA_Client_ID,
+    clientId: process.env.CLIENT_ID_WEB,
     androidClientId: process.env.CLIENT_ID_ANDROID,
   });
 
+  // GoogleSignin.configure({
+  //   webClientId: process.env.OUSSAMA_Client_ID,
+  // });
+
   const [State, setState] = useState();
+
+  useEffect(() => {
+    console.log(response?.type);
+
+    // console.log(response.authentication.accessToken);
+  }, [response, token]);
 
   // useEffect(() => {
   //   if (response?.type === "success") {
@@ -42,44 +55,21 @@ export default function Signin() {
   //   }
   // }, [response, token]);
 
-  // async function GetUser() {
-  //   const res = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-  //     headers: {
-  //       Authorization: "Bearer" + token,
-  //     },
-  //   });
-
-  //   const user = res.json();
-  //   setuser(user);
+  // async function GetUser(token) {
+  //   if (!token) return;
+  //   try {
+  //     const res = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+  //       headers: {
+  //         Authorization: "Bearer" + token,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  //   // const user = res.json();
+  //   // setuser(user);
   // }
 
-  const _signIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const user = await GoogleSignin.signIn().then((res) => {
-        console.log(res);
-      });
-    } catch (error) {
-      console.log(error);
-      // if (isErrorWithCode(error)) {
-      //   switch (error.code) {
-      //     case statusCodes.SIGN_IN_CANCELLED:
-      //       // user cancelled the login flow
-      //       break;
-      //     case statusCodes.IN_PROGRESS:
-      //       // operation (eg. sign in) already in progress
-      //       break;
-      //     case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-      //       // play services not available or outdated
-      //       break;
-      //     default:
-      //     // some other error happened
-      //   }
-      // } else {
-      //   // an error that's not related to google sign in occurred
-      // }
-    }
-  };
   return (
     <View style={[Gstyles.container, { backgroundColor: "white" }]}>
       <StatusBar backgroundColor={COLORSS.Green}></StatusBar>
@@ -90,10 +80,37 @@ export default function Signin() {
       <View style={Styles.FooterContainer}>
         <View style={Styles.FooterContent}>
           <View style={Styles.SinginButtons}>
+            <View
+              style={{
+                width: "100%",
+                height: 90,
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+                // borderWidth: 1,
+                // borderColor: "black",
+              }}
+            >
+              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+                Welcome to{" "}
+              </Text>
+              <Text
+                style={{
+                  fontWeight: "bold",
+                  fontSize: 20,
+                  color: COLORSS.Green,
+                }}
+              >
+                PharmaConnect
+              </Text>
+            </View>
+            <View style={{ height: 30 }}>
+              <Text style={{ color: "gray" }}>Sing In with with google</Text>
+            </View>
             <TouchableOpacity
               style={Styles.Button}
               onPress={() => {
-                _signIn();
+                promptasync({ showInRecents: true });
               }}
             >
               <Image
@@ -101,8 +118,23 @@ export default function Signin() {
                 source={GoogleI}
               ></Image>
             </TouchableOpacity>
+            <View
+              style={{
+                height: 35,
+                justifyContent: "center",
+              }}
+            >
+              <Button
+                title="home"
+                onPress={() => {
+                  router.replace("/src/tabs");
+                }}
+              ></Button>
+              <Text style={{ fontSize: 10 }}>
+                By registration you agree to Terms of use and Privacy Police
+              </Text>
+            </View>
           </View>
-          <View></View>
         </View>
       </View>
     </View>
@@ -111,14 +143,16 @@ export default function Signin() {
 
 const Styles = StyleSheet.create({
   SigninContainer: {
-    flex: 0.5,
+    flex: 0.7,
     backgroundColor: COLORSS.Green,
     justifyContent: "center",
     alignItems: "center",
   },
   FooterContainer: {
-    flex: 0.5,
+    flex: 0.3,
     backgroundColor: COLORSS.Green,
+    borderWidth: 1,
+    borderColor: "red",
   },
   FooterContent: {
     borderTopLeftRadius: 60,
@@ -139,9 +173,11 @@ const Styles = StyleSheet.create({
     paddingVertical: 20,
   },
   SinginButtons: {
-    flex: 0.4,
-    justifyContent: "center",
+    flex: 1,
+    justifyContent: "flex-start",
     alignItems: "center",
+    // borderWidth: 1,
+    // borderColor: "red",
   },
   Button: {
     borderWidth: 1,

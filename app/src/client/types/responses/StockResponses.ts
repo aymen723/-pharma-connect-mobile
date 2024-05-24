@@ -1,6 +1,6 @@
 export type TagTypeRespData = {
   id: number;
-  name: "TYPE" | "DOSAGE" | "CONSUMPTION";
+  name: "TYPE" | "DESCRIBER";
 };
 
 export type TagRespData = {
@@ -17,6 +17,8 @@ export type ProductRespData = {
   price: number;
   barcode: string;
   tags: TagRespData[];
+  picture?: string;
+  para: boolean;
 };
 
 export type Coordinates = {
@@ -37,8 +39,9 @@ export type PharmacyRespData = {
   id: number;
   name: string;
   location: Location;
-  paymentSupport: boolean;
+  supportPayment: boolean;
   enabled: boolean;
+  picture?: string;
 };
 
 export type StockId = {
@@ -51,4 +54,5 @@ export type AvailableStockRespData = {
   product: ProductRespData;
   pharmacy: PharmacyRespData;
   price?: number | null;
+  purchasable: boolean;
 };

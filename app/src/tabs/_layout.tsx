@@ -1,61 +1,70 @@
 import React, { useState } from "react";
 import { Tabs } from "expo-router";
-import { Home } from "lucide-react-native";
-import { Settings } from "lucide-react-native";
-import Header from "../Component/Header";
 import AccountHeader from "../Component/AccountHeader";
-import MapHeader from "../Component/MapHeader";
-import { Button } from "react-native";
-import { Provider } from "react-redux";
-import { store } from "../Redux/Store";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Feather from "@expo/vector-icons/Feather";
+import { COLORSS } from "../constants/theme";
+
 export default function HomeLayout() {
   const [count, setCount] = useState(0);
 
   return (
-    <Provider store={store}>
-      <Tabs
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused }) => {
-            if (route.name == "Home") {
-              return <Home color={"black"} size={20} />;
-            } else {
-              return <Settings color={"black"} size={20} />;
-            }
+    <Tabs
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused }) => {
+          if (route.name == "Home") {
+            return <AntDesign name="home" size={22} color="black" />;
+          } else if (route.name == "Map") {
+            return <Feather name="map" size={22} color="black" />;
+          } else if (route.name == "Account") {
+            return <Feather name="settings" size={22} color="black" />;
+          }
+        },
+
+        tabBarActiveTintColor: COLORSS.Green,
+        tabBarInactiveTintColor: "gray",
+        headerShown: false,
+      })}
+      initialRouteName="Home"
+    >
+      <Tabs.Screen
+        name="Home"
+        options={{
+          headerShown: false,
+          headerStyle: { backgroundColor: "white" },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
           },
 
-          tabBarActiveTintColor: "green",
-          tabBarInactiveTintColor: "gray",
+          // header: (props) => <MapHeader onModalToggle={props}></MapHeader>,
+        }}
+      />
+      <Tabs.Screen
+        name="Map"
+        options={{
           headerShown: false,
-        })}
-        initialRouteName="Home"
-      >
-        <Tabs.Screen name="Home" />
-        <Tabs.Screen
-          name="Map"
-          options={{
-            headerShown: false,
-            headerStyle: { backgroundColor: "white" },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
+          headerStyle: { backgroundColor: "white" },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
 
-            // header: (props) => <MapHeader onModalToggle={props}></MapHeader>,
-          }}
-        />
-        <Tabs.Screen
-          options={{
-            headerShown: true,
-            headerStyle: { backgroundColor: "white" },
-            headerTintColor: "#fff",
-            headerTitleStyle: {
-              fontWeight: "bold",
-            },
-            header: (props) => <AccountHeader></AccountHeader>,
-          }}
-          name="Account"
-        />
-      </Tabs>
-    </Provider>
+          // header: (props) => <MapHeader onModalToggle={props}></MapHeader>,
+        }}
+      />
+      <Tabs.Screen
+        options={{
+          headerShown: true,
+          headerStyle: { backgroundColor: "white" },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          header: (props) => <AccountHeader></AccountHeader>,
+        }}
+        name="Account"
+      />
+    </Tabs>
   );
 }

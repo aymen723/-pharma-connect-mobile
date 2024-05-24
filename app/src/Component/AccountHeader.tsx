@@ -1,10 +1,12 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { Gstyles } from "../constants/theme";
+import { COLORSS, Gstyles } from "../constants/theme";
 
 export default function AccountHeader() {
   return (
-    <View style={Gstyles.headerContainer}>
+    <View
+      style={[Gstyles.headerContainer, { backgroundColor: COLORSS.maingray }]}
+    >
       <View style={styles.container}>
         <Text style={styles.headertitle}>My Profile</Text>
       </View>

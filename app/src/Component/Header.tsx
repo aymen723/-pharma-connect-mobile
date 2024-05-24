@@ -1,10 +1,18 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
-import { Gstyles } from "../constants/theme";
-import { ArrowLeft } from "lucide-react-native";
-import { router } from "expo-router";
+import { COLORSS, Gstyles } from "../constants/theme";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import {
+  router,
+  useLocalSearchParams,
+  useNavigation,
+  useRouter,
+} from "expo-router";
+import Feather from "@expo/vector-icons/Feather";
 
 export default function Header() {
+  const params = useLocalSearchParams();
+
   return (
     <View style={Gstyles.headerContainer}>
       <TouchableOpacity
@@ -13,13 +21,27 @@ export default function Header() {
         }}
         style={styles.backbutton}
       >
-        <ArrowLeft color={"black"} size={30} />
+        <AntDesign name="left" size={24} color="black" />
       </TouchableOpacity>
       <View style={styles.Producttitle}>
         <Text
-          style={{ color: "black", fontSize: 20, fontWeight: "bold" }}
-        ></Text>
+          style={{
+            color: COLORSS.Green,
+            fontSize: 20,
+            fontWeight: "bold",
+          }}
+        >
+          {params.name}
+        </Text>
       </View>
+      <TouchableOpacity
+        onPress={() => {
+          router.push("/src/Screens/Cart");
+        }}
+        style={styles.backbutton}
+      >
+        <Feather name="shopping-cart" size={24} color="black" />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -31,14 +53,15 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "black",
+    // borderWidth: 1,
+    // borderColor: "black",
   },
   Producttitle: {
-    borderWidth: 1,
-    borderColor: "red",
+    // borderWidth: 1,
+    // borderColor: "red",
     width: "auto",
     justifyContent: "center",
     alignItems: "center",
+    marginLeft: 10,
   },
 });

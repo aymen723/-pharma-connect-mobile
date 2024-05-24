@@ -43,7 +43,6 @@ export default function Map() {
     });
   }
 
-  
   async function GetLocation() {
     const { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
@@ -58,7 +57,6 @@ export default function Map() {
     setLocation(location);
   }
 
-  
   useEffect(() => {
     GetLocation();
     fetchPharmaciesByFilter()
@@ -97,12 +95,12 @@ export default function Map() {
             statechnage={SetSearch}
             onModalToggle={handleModalToggle}
           />
-          <Button
+          {/* <Button
             title={"test api "}
             onPress={() => {
               test();
             }}
-          ></Button>
+          ></Button> */}
           <MapView
             initialRegion={{
               latitude: loc.coords.latitude,
@@ -136,9 +134,7 @@ export default function Map() {
                       }}
                       title={item.name}
                       icon={require("../../../assets/Images/download.png")}
-                    >
-                      {/* <Pill color={"green"} size={25} /> */}
-                    </Marker>
+                    ></Marker>
                   );
                 })
               : null}

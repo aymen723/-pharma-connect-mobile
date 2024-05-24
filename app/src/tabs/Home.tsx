@@ -3,9 +3,7 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  TextInput,
   TouchableOpacity,
-  Button,
   ScrollView,
   ActivityIndicator,
 } from "react-native";
@@ -14,7 +12,6 @@ import { StatusBar } from "expo-status-bar";
 import { COLORSS, Gstyles } from "../constants/theme";
 import Productcard from "../Component/Productcard";
 import { router } from "expo-router";
-import { Search, ShoppingCart, Menu } from "lucide-react-native";
 import { DrawerActions } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/core";
 import { fetchProductsByFilter } from "../client/api/stockService/productApi";
@@ -26,7 +23,8 @@ import {
   ProductRespData,
   TagRespData,
 } from "../client/types/responses/StockResponses";
-import axios from "axios";
+import Feather from "@expo/vector-icons/Feather";
+import Entypo from "@expo/vector-icons/Entypo";
 
 export default function Home() {
   const [products, Setproducts] = useState<Page<ProductRespData> | undefined>();
@@ -65,7 +63,7 @@ export default function Home() {
             }}
             style={styles.sidebar}
           >
-            <Menu color={"black"} />
+            <Entypo name="menu" size={24} color="black" />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -73,7 +71,12 @@ export default function Home() {
             }}
             style={Gstyles.searchinput}
           >
-            <Search color="gray" size={20} style={{ paddingLeft: 50 }} />
+            <Feather
+              name="search"
+              size={20}
+              style={{ paddingLeft: 20 }}
+              color="gray"
+            />
             <Text style={{ paddingLeft: 10, color: "gray" }}>Search</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -82,7 +85,7 @@ export default function Home() {
             }}
             style={styles.cart}
           >
-            <ShoppingCart color={"black"} />
+            <Feather name="shopping-cart" size={24} color="black" />
           </TouchableOpacity>
         </View>
       </View>
@@ -115,19 +118,19 @@ export default function Home() {
             )}
           </ScrollView>
         </View>
-
         <View style={styles.productlist}>
           <FlatList
-            style={{ flex: 1, height: 130 }}
+            style={{ backgroundColor: COLORSS.white }}
             contentContainerStyle={styles.listscroll}
             data={products?.content}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
             numColumns={2}
+            keyExtractor={(item) => item.id}
             columnWrapperStyle={styles.row}
             renderItem={Productcard}
-            pagingEnabled={true}
+            // pagingEnabled={true}
           />
         </View>
       </View>
@@ -150,6 +153,8 @@ const styles = StyleSheet.create({
   productlist: {
     flex: 1,
     width: "100%",
+    borderWidth: 1,
+    borderColor: "red",
   },
   TagContainer: {
     width: "100%",
@@ -162,8 +167,8 @@ const styles = StyleSheet.create({
   row: {
     display: "flex",
     justifyContent: "space-evenly",
-    paddingTop: 10,
-    paddingBottom: 10,
+    paddingTop: 5,
+    paddingBottom: 5,
   },
   inputView: {
     height: "100%",

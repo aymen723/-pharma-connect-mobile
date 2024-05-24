@@ -1,27 +1,33 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
-import { product } from "../Models/models";
-import { CircleX } from "lucide-react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { COLORSS } from "../constants/theme";
-
-export default function CartItem({ item }: { item: product }) {
+import { ProductRespData } from "../client/types/responses/StockResponses";
+import { useCartStore } from "../zustand/store";
+export default function CartItem({ item }: { item: ProductRespData }) {
   return (
     <View style={styles.itemcontainer}>
       <View style={styles.picontainer}>
-        <Image style={styles.itempic} source={item.image}></Image>
+        <Image style={styles.itempic} source={{ uri: item.picture }}></Image>
       </View>
       <View style={styles.infoitem}>
         <View style={styles.itemtitle}>
           <View style={styles.titlesection}>
             <Text style={styles.infotext}>{item.name}</Text>
-            <Text style={[styles.infotext, { color: "rgba(9, 15, 71, 0.45)" }]}>
-              {item.descprtion}
-            </Text>
           </View>
           <TouchableOpacity
-            style={{ justifyContent: "center", alignItems: "center" }}
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              borderColor: "red",
+              borderWidth: 1,
+            }}
           >
-            <CircleX color={"rgba(0,0,0,0.25)"} size={20} />
+            <AntDesign
+              name="closecircleo"
+              color={"rgba(0,0,0,0.25)"}
+              size={20}
+            />
           </TouchableOpacity>
         </View>
         <View style={[styles.itemtitle, { height: "40%" }]}>
@@ -51,19 +57,21 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 10,
-    resizeMode: "center",
+    resizeMode: "stretch",
   },
   picontainer: {
     width: "30%",
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: "red",
   },
   infoitem: {
     width: "70%",
     height: "100%",
-    // borderWidth: 1,
-    // borderColor: "green",
+    borderWidth: 1,
+    borderColor: "green",
   },
   itemtitle: {
     width: "100%",
@@ -75,8 +83,8 @@ const styles = StyleSheet.create({
   titlesection: {
     width: "90%",
     height: "100%",
-    // borderColor: "red",
-    // borderWidth: 1,
+    borderColor: "red",
+    borderWidth: 1,
     justifyContent: "center",
     alignItems: "flex-start",
   },

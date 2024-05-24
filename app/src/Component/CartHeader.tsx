@@ -1,9 +1,8 @@
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useState } from "react";
-import { Gstyles } from "../constants/theme";
-import { ArrowLeft } from "lucide-react-native";
+import { COLORSS, Gstyles } from "../constants/theme";
+import Entypo from "@expo/vector-icons/Entypo";
 import { router } from "expo-router";
-import { product } from "../Models/models";
 
 export default function CartHeader({ title }: { title: string }) {
   return (
@@ -14,7 +13,7 @@ export default function CartHeader({ title }: { title: string }) {
           router.back();
         }}
       >
-        <ArrowLeft color={"black"} size={30} />
+        <Entypo name="chevron-left" size={30} color="black" />
       </TouchableOpacity>
       <View>
         <Text style={{ fontSize: 20, fontWeight: "bold" }}>{title}</Text>
@@ -29,5 +28,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     flexDirection: "row",
+    backgroundColor: COLORSS.maingray,
   },
 });

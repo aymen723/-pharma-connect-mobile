@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
-import { Settings2 } from "lucide-react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { StatusBar } from "expo-status-bar";
 
 export default function MapHeader({ onModalToggle, statechnage }) {
@@ -23,13 +23,14 @@ export default function MapHeader({ onModalToggle, statechnage }) {
 
       <TextInput
         value={Search}
+        placeholder={"Search"}
         onChangeText={(e) => {
           handleChange(e);
         }}
         style={[Gstyles.searchinput, { backgroundColor: "white" }]}
       ></TextInput>
       <TouchableOpacity style={styles.IconBox} onPress={onModalToggle}>
-        <Settings2 size={20} color={"black"}></Settings2>
+        <Ionicons name="menu-outline" size={30} color="black" />
       </TouchableOpacity>
     </View>
   );

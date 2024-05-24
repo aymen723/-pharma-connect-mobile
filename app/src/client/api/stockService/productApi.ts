@@ -6,7 +6,7 @@ import {
 } from "../../types/responses/StockResponses";
 import { Filter } from "../../types/requests";
 import { Page } from "../../types/responses";
-import { prepareSearchParams } from "./../../util/dataTransformation";
+import { prepareSearchParams } from "../../util/dataTransformation";
 import { ProductFilterParams } from "../../types/requests/ProductRequests";
 
 export const fetchProductById = (

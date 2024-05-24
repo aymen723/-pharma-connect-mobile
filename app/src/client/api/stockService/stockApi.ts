@@ -2,24 +2,21 @@ import { Filter } from "../../types/requests";
 
 import {
   AvailableStockRespData,
+  PharmacyRespData,
   StockId,
 } from "../../types/responses/StockResponses";
 import { Page } from "../../types/responses";
 import { STOCK_SERVICE_URL_V1 } from "../../config/settings";
 import axios, { AxiosRequestConfig, CustomParamsSerializer } from "axios";
 import { prepareSearchParams } from "../../util/dataTransformation";
-import {
-  GetFilteredStockReq,
-  StockFilterParams,
-} from "../../types/requests/StockRequests";
+import { StockFilterParams } from "../../types/requests/StockRequests";
 
 export const fetchStockByFilter = (
   searchFilter?: Filter<StockFilterParams>,
   config?: AxiosRequestConfig
 ) => {
   const params = prepareSearchParams(searchFilter);
-  console.log("stock params ", params);
-  console.log("stock body ", searchFilter?.body);
+
   return axios<Page<AvailableStockRespData>>({
     url: STOCK_SERVICE_URL_V1 + "/stock",
     params,
@@ -34,5 +31,23 @@ export const fetchStockById = (id: StockId, config?: AxiosRequestConfig) => {
     method: "GET",
 
     ...config,
+  });
+};
+
+export const fetchStockFromPharmacy = (
+  pharmacyId: PharmacyRespData["id"],
+  searchFilter?: StockFilterParams,
+  config?: AxiosRequestConfig
+) => {
+  const params = prepareSearchParams(searchFilter);
+
+  return axios<Page<AvailableStockRespData>>({
+    url: `${STOCK_SERVICE_URL_V1}/pharmacies/${pharmacyId}/stock`,
+    params,
+    method: "GET",
+    ...config,
+  }).catch((err) => {
+    console.log("fetch pharmacy stock error", err);
+    return err;
   });
 };

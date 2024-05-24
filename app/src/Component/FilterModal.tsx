@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import React, { useState } from "react";
 import { COLORSS, SHADOWS, deviceWidth } from "../constants/theme";
 import { Slider } from "@rneui/themed";
-import { Locate } from "lucide-react-native";
+// import { Locate } from "lucide-react-native";
 import Modal from "react-native-modal";
 
 export default function FilterModal({ Visible, Range, Statevisible }) {
@@ -65,9 +65,9 @@ export default function FilterModal({ Visible, Range, Statevisible }) {
               shadowRadius: SHADOWS.small.shadowOpacity,
               elevation: SHADOWS.small.elevation,
             }}
-            thumbProps={{
-              children: <Locate size={20} color="#f50" />,
-            }}
+            // thumbProps={{
+            //   children: <Locate size={20} color="#f50" />,
+            // }}
           />
         </View>
       </View>

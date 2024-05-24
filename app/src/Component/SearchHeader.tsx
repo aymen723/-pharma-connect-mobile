@@ -1,7 +1,9 @@
 import { View, StyleSheet, TextInput, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
-import { ArrowLeft } from "lucide-react-native";
 import { router } from "expo-router";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { Entypo } from "@expo/vector-icons";
+import { COLORSS } from "../constants/theme";
 export default function SearchHeader({ SearchValue, SearchInput }) {
   function hundelSearch(e) {
     SearchInput(e);
@@ -14,7 +16,7 @@ export default function SearchHeader({ SearchValue, SearchInput }) {
         }}
         style={styles.backbutton}
       >
-        <ArrowLeft color={"black"} size={30} />
+        <Entypo name="chevron-left" size={30} color="black" />
       </TouchableOpacity>
       <TextInput
         placeholder="Search ..."
@@ -22,6 +24,14 @@ export default function SearchHeader({ SearchValue, SearchInput }) {
         value={SearchValue}
         onChangeText={hundelSearch}
       ></TextInput>
+      <TouchableOpacity
+        onPress={() => {
+          router.push("/src/Screens/MapSearch");
+        }}
+        style={styles.backbutton}
+      >
+        <AntDesign name="pluscircle" size={24} color={COLORSS.Green} />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -39,9 +49,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   Searchinput: {
-    width: "85%",
+    width: "70%",
     height: "100%",
     fontSize: 18,
+    borderWidth: 1,
+    borderColor: "red",
   },
   backbutton: {
     width: "15%",

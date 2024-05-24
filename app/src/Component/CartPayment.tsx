@@ -5,11 +5,26 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
 import { router } from "expo-router";
+import { useCartStore } from "../zustand/store";
 
 export default function CartPayment() {
+  const { cart } = useCartStore();
+  const [OrderTotal, setOrderTotal] = useState<number>(0);
+  const [Coupon, setCoupon] = useState<number>(0);
+  const [Total, setTotal] = useState<number>(0);
+
+  useEffect(() => {
+    let order = 0;
+    cart.forEach((element) => {
+      order = order + element.price;
+    });
+    setOrderTotal(order);
+    setCoupon(1000);
+    setTotal(order - Coupon);
+  }, [cart, Coupon]);
   return (
     <View style={styles.container}>
       <View style={styles.orderinfo}>
@@ -21,17 +36,13 @@ export default function CartPayment() {
         >
           <View style={styles.infotext}>
             <Text style={styles.textstyle}>Order Total</Text>
-            <Text>228.20</Text>
+            <Text>{OrderTotal}</Text>
           </View>
           <View style={styles.infotext}>
-            <Text style={styles.textstyle}>Order Total</Text>
-            <Text>228.20</Text>
+            <Text style={styles.textstyle}>coupon</Text>
+            <Text>{Coupon}</Text>
           </View>
 
-          <View style={styles.infotext}>
-            <Text style={styles.textstyle}>Shipping</Text>
-            <Text>228.20</Text>
-          </View>
           <View style={[styles.infotext, { height: 60 }]}>
             <Text
               style={[
@@ -41,7 +52,7 @@ export default function CartPayment() {
             >
               Total
             </Text>
-            <Text>228.20</Text>
+            <Text>{Total}</Text>
           </View>
         </ScrollView>
       </View>
