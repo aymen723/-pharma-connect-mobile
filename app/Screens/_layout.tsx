@@ -61,6 +61,14 @@ export default function ScreensLayout() {
 
       <Stack.Screen
         options={{
+          title: "Edit Profile",
+          header: (props) => <CartHeader title={"Edit Profile"}></CartHeader>,
+        }}
+        name="Editprofile"
+      />
+
+      <Stack.Screen
+        options={{
           title: "Checkout",
           headerShown: false,
         }}

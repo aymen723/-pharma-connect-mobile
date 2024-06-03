@@ -7,6 +7,7 @@ export default function StackLayout() {
       screenOptions={{
         headerShown: false,
       }}
+      initialRouteName="Loading"
     >
       <Stack.Screen name="Onboarding" />
       <Stack.Screen name="Signin" />

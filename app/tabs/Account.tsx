@@ -1,39 +1,78 @@
-import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Image,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
 import { StatusBar } from "expo-status-bar";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Entypo from "@expo/vector-icons/Entypo";
-
 import { router } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { UserType } from "../client/types/responses/Client";
 
 export default function Account() {
-  function Logout() {
-    console.log("here");
-    router.replace("src/(auth)/Signin");
-  }
+  const [User, setUser] = useState<UserType | undefined>();
+
+  const getCurrentUser = async () => {
+    const currentUser = GoogleSignin.getCurrentUser().then((res) => {
+      console.log("here is the user ", res);
+      setUser(res?.user);
+    });
+  };
+
+  const signOut = async () => {
+    AsyncStorage.removeItem("@User").then((res) => {
+      GoogleSignin.signOut();
+      router.replace("/(auth)/Signin");
+    });
+  };
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
+
   return (
     <View style={Gstyles.container}>
       <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>
-      <View style={styles.profileitem}>
-        <View style={styles.profilesection1}>
-          <Image
-            source={{
-              uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbpF3IRjq3K2vF74PNI4mpc-kzYwXmegSupg&usqp=CAU",
-            }}
-            style={styles.profilepic}
-          ></Image>
+      {User ? (
+        <View style={styles.profileitem}>
+          <View style={styles.profilesection1}>
+            <Image
+              source={{
+                uri: User.photo,
+              }}
+              style={styles.profilepic}
+            ></Image>
+          </View>
+          <View style={styles.profilesection2}>
+            <Text style={{ fontSize: 23, fontWeight: "bold" }}>
+              Hi, {User.name}
+            </Text>
+            <Text style={{ fontSize: 16, color: "gray" }}>
+              welcome to PharmaConnect
+            </Text>
+          </View>
         </View>
-        <View style={styles.profilesection2}>
-          <Text style={{ fontSize: 23, fontWeight: "bold" }}>Hi, Aymen</Text>
-          <Text style={{ fontSize: 16, color: "gray" }}>
-            welcome to PharmaConnect
-          </Text>
-        </View>
-      </View>
+      ) : (
+        <ActivityIndicator
+          size={"small"}
+          color={COLORSS.Green}
+        ></ActivityIndicator>
+      )}
       <View style={styles.itemcontainer}>
-        <TouchableOpacity style={styles.items}>
+        {/* <TouchableOpacity
+          style={styles.items}
+          onPress={() => {
+            router.push("/Screens/Editprofile");
+          }}
+        >
           <View style={styles.itemicon}>
             <AntDesign name="menuunfold" size={24} color="black" />
           </View>
@@ -41,7 +80,7 @@ export default function Account() {
             <Text>Edit Profile</Text>
             <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.items}>
           <View style={styles.itemicon}>
             <MaterialIcons name="payment" size={24} color="black" />
@@ -69,7 +108,7 @@ export default function Account() {
             <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={Logout} style={styles.items}>
+        <TouchableOpacity onPress={signOut} style={styles.items}>
           <View style={styles.itemicon}>
             <AntDesign name="logout" size={24} color="black" />
           </View>
@@ -95,7 +134,8 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     borderWidth: 3,
-    borderColor: "green",
+    resizeMode: "contain",
+    borderColor: COLORSS.Green,
   },
   profilesection2: {
     width: "70%",

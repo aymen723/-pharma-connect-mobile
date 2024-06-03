@@ -10,17 +10,17 @@ import * as browser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import React, { useEffect, useState } from "react";
 import { COLORSS, Gstyles, SHADOWS } from "../constants/theme";
-import icon from "../../../assets/Images/image1.png";
-import GoogleI from "../../../assets/Images/GoogleI.png";
+import icon from "../../assets/Images/image1.png";
+import GoogleI from "../../assets/Images/GoogleI.png";
 import { router } from "expo-router";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
-
-// import {
-//   GoogleSignin,
-//   GoogleSigninButton,
-//   statusCodes,
-// } from "@react-native-google-signin/google-signin";
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 browser.maybeCompleteAuthSession();
 
@@ -29,46 +29,59 @@ export default function Signin() {
 
   const [user, setuser] = useState(null);
 
-  const [userinfo, setuserinfo] = useState();
+  const [userInfo, setUserInfo] = useState();
 
   const [request, response, promptasync] = Google.useAuthRequest({
-    clientId: process.env.CLIENT_ID_WEB,
+    clientId: process.env.OUSSAMA_Client_ID,
     androidClientId: process.env.CLIENT_ID_ANDROID,
   });
+  const [isError, isErrorWithCode] = useState();
 
-  // GoogleSignin.configure({
-  //   webClientId: process.env.OUSSAMA_Client_ID,
-  // });
+  const _signIn = async () => {
+    try {
+      GoogleSignin.configure({
+        iosClientId:
+          "com.googleusercontent.apps.396902336566-9am1bgbofebv4mvmmact86uj2s690kc0",
+        offlineAccess: true,
+        webClientId: process.env.CLIENT_ID_WEB,
+        androidClientId: process.env.CLIENT_ID_ANDROID,
+        scopes: ["profile", "email"],
+      });
+      await GoogleSignin.hasPlayServices();
+      console.log("reached google sign in");
+      GoogleSignin.signIn().then((res) => {
+        console.log("here in google signin", res);
 
-  const [State, setState] = useState();
+        AsyncStorage.setItem("@User", JSON.stringify(res));
 
-  useEffect(() => {
-    console.log(response?.type);
+        router.replace("/tabs/Home");
+      });
+    } catch (error) {
+      if (isErrorWithCode(error)) {
+        switch (error.code) {
+          case statusCodes.SIGN_IN_CANCELLED:
+            // user cancelled the login flow
+            break;
+          case statusCodes.IN_PROGRESS:
+            // operation (eg. sign in) already in progress
+            break;
+          case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+            // play services not available or outdated
+            break;
+          default:
+          // some other error happened
+        }
+      } else {
+        // an error that's not related to google sign in occurred
+      }
+    }
+  };
 
-    // console.log(response.authentication.accessToken);
-  }, [response, token]);
-
-  // useEffect(() => {
-  //   if (response?.type === "success") {
-  //     settoken(response.authentication?.accessToken);
-  //     token && GetUser();
-  //   }
-  // }, [response, token]);
-
-  // async function GetUser(token) {
-  //   if (!token) return;
-  //   try {
-  //     const res = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-  //       headers: {
-  //         Authorization: "Bearer" + token,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  //   // const user = res.json();
-  //   // setuser(user);
-  // }
+  const getCurrentUser = async () => {
+    const currentUser = GoogleSignin.getCurrentUser();
+    // setState({ currentUser });
+    console.log(currentUser);
+  };
 
   return (
     <View style={[Gstyles.container, { backgroundColor: "white" }]}>
@@ -110,7 +123,8 @@ export default function Signin() {
             <TouchableOpacity
               style={Styles.Button}
               onPress={() => {
-                promptasync({ showInRecents: true });
+                // promptasync({ showInRecents: true });
+                _signIn();
               }}
             >
               <Image
@@ -124,12 +138,6 @@ export default function Signin() {
                 justifyContent: "center",
               }}
             >
-              <Button
-                title="home"
-                onPress={() => {
-                  router.replace("/src/tabs");
-                }}
-              ></Button>
               <Text style={{ fontSize: 10 }}>
                 By registration you agree to Terms of use and Privacy Police
               </Text>

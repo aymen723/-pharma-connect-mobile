@@ -144,7 +144,7 @@ export default function Onboarding() {
       <View style={Styles.FooterContainer}>
         <TouchableOpacity
           onPress={() => {
-            router.push("/src/(auth)/Signin");
+            router.push("/(auth)/Signin");
           }}
           style={[Styles.FooterButton, { backgroundColor: COLORSS.Green }]}
         >
@@ -165,7 +165,7 @@ export default function Onboarding() {
         <TouchableOpacity
           onPress={() => {
             if (flatListIndex.value + 1 === data.length) {
-              router.push("/src/(auth)/Signin");
+              router.push("(auth)/Signin");
             }
           }}
           style={Styles.FooterButton}

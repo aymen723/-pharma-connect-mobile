@@ -133,7 +133,7 @@ export default function Map() {
                         HundelPharmcay(item);
                       }}
                       title={item.name}
-                      icon={require("../../../assets/Images/download.png")}
+                      icon={require("../../assets/Images/download.png")}
                     ></Marker>
                   );
                 })
