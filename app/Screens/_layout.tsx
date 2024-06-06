@@ -74,6 +74,28 @@ export default function ScreensLayout() {
         }}
         name="MapSearch"
       />
+
+      <Stack.Screen
+        options={{
+          title: "Orders",
+          header: (props) => <CartHeader title={"Orders"}></CartHeader>,
+        }}
+        name="Orders"
+      />
+      <Stack.Screen
+        options={{
+          title: "Settings",
+          header: (props) => <CartHeader title={"Settings"}></CartHeader>,
+        }}
+        name="Settings"
+      />
+      <Stack.Screen
+        options={{
+          title: "BillingAdress",
+          header: (props) => <CartHeader title={"BillingAdress"}></CartHeader>,
+        }}
+        name="BillingAdress"
+      />
     </Stack>
   );
 }

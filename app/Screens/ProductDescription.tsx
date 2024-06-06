@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { fetchProductById } from "../client/api/stockService/productApi";
 import { ProductRespData } from "../client/types/responses/StockResponses";
@@ -18,6 +18,7 @@ import Tag from "../Component/Tag";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Modal from "react-native-modal";
 import { useCartStore } from "../zustand/store";
+import { fetchPharmaciesByFilter } from "../client/api/stockService/pharmacyApi";
 
 export default function ProductDescription() {
   const { id, name } = useLocalSearchParams();
@@ -39,6 +40,15 @@ export default function ProductDescription() {
         console.log(err);
       });
   }, [id]);
+
+  function locate() {
+    router.push({
+      pathname: "/Screens/MapSearch",
+      params: {
+        ProductID: Product?.id,
+      },
+    });
+  }
 
   return (
     <ScrollView
@@ -134,7 +144,12 @@ export default function ProductDescription() {
             </Text>
           </View>
           <View style={styles.ProductButton}>
-            <TouchableOpacity style={styles.Button}>
+            <TouchableOpacity
+              style={styles.Button}
+              onPress={() => {
+                locate();
+              }}
+            >
               <Text
                 style={{ color: "white", fontSize: 16, fontWeight: "bold" }}
               >

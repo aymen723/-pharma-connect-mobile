@@ -1,4 +1,2 @@
-export const STOCK_SERVICE_URL_V1 =
-  "http://192.168.1.34:8080/stock-service/api/v1";
-export const AUTH_SERVICE_URL_V1 =
-  "http://192.168.1.34:8080/auth-service/api/v1";
+export const STOCK_SERVICE_URL_V1 = "http://192.168.1.38:8090/api/v1";
+export const AUTH_SERVICE_URL_V1 = "http://192.168.1.38:8070/api/v1";

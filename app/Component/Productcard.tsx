@@ -6,18 +6,23 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { router } from "expo-router";
 import { ProductRespData } from "../client/types/responses/StockResponses";
 import { SHADOWS, COLORSS } from "../constants/theme";
-
+import { Feather } from "@expo/vector-icons";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 export default function Productcard({ item }: { item: ProductRespData }) {
+  const [Booked, setBooked] = useState(true);
   return (
     <TouchableOpacity
+      onLongPress={() => {
+        setBooked(!Booked);
+      }}
       key={item.id}
       onPress={() => {
         router.push({
-          pathname: `/src/Screens/ProductDescription`,
+          pathname: `/Screens/ProductDescription`,
           params: {
             id: item.id,
             name: item.name,
@@ -34,38 +39,41 @@ export default function Productcard({ item }: { item: ProductRespData }) {
         <View style={styles.title}>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 15,
               fontWeight: "bold",
-              // padding: 5,
               color: COLORSS.textcolor,
             }}
           >
             {item.name}
           </Text>
-          <Text
-            style={{
-              fontSize: 14,
-              fontWeight: "bold",
-              // padding: 5,
-              color: "gray",
-            }}
-          >
-            Dz {item.price}
-          </Text>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "700",
+                color: "gray",
+              }}
+            >
+              DZ
+            </Text>
+            <Text
+              style={{
+                fontSize: 14,
+                fontWeight: "bold",
+                color: "gray",
+                marginLeft: 5,
+              }}
+            >
+              {item.price}
+            </Text>
+          </View>
         </View>
-        {/* <ScrollView horizontal style={styles.tagscontainer}>
-          {item.tags.map((item) => {
-            return (
-              <View style={styles.tags} key={item.id}>
-                <Text
-                  style={{ color: "white", fontSize: 12, fontWeight: "600" }}
-                >
-                  {item.name}
-                </Text>
-              </View>
-            );
-          })}
-        </ScrollView> */}
+
+        {Booked ? (
+          <Feather name="bookmark" size={20} color="black" />
+        ) : (
+          <MaterialCommunityIcons name="bookmark" size={20} color="black" />
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -74,8 +82,7 @@ export default function Productcard({ item }: { item: ProductRespData }) {
 const styles = StyleSheet.create({
   conatiner: {
     width: 185,
-    height: 230,
-
+    height: 220,
     borderRadius: 15,
     backgroundColor: "white",
   },
@@ -87,18 +94,18 @@ const styles = StyleSheet.create({
   },
   contentbox: {
     flex: 0.3,
-    justifyContent: "center",
+    flexDirection: "row",
+    justifyContent: "space-evenly",
     alignItems: "center",
   },
   image: {
     width: "100%",
     height: "100%",
     resizeMode: "stretch",
-    borderRadius: 40,
+
+    borderRadius: 15,
   },
   tagscontainer: {
-    borderWidth: 1,
-    borderColor: "red",
     // display: "flex",
     // flexDirection: "row",
     width: "100%",
@@ -115,9 +122,8 @@ const styles = StyleSheet.create({
     marginLeft: 2,
   },
   title: {
-    // borderWidth: 1,
-    // borderColor: "green",
-    width: "90%",
+    width: "80%",
     height: "60%",
+    justifyContent: "space-evenly",
   },
 });

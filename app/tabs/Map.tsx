@@ -91,16 +91,6 @@ export default function Map() {
     <>
       {loc ? (
         <View style={Gstyles.container}>
-          <MapHeader
-            statechnage={SetSearch}
-            onModalToggle={handleModalToggle}
-          />
-          {/* <Button
-            title={"test api "}
-            onPress={() => {
-              test();
-            }}
-          ></Button> */}
           <MapView
             initialRegion={{
               latitude: loc.coords.latitude,

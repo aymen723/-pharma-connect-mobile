@@ -7,10 +7,14 @@ import { router } from "expo-router";
 export default function SearchproductComp({ item }: { item: ProductRespData }) {
   function locate() {
     router.push({
-      pathname: "/src/Screens/MapSearch",
-      params: item,
+      pathname: `/Screens/ProductDescription`,
+      params: {
+        id: item.id,
+        name: item.name,
+      },
     });
   }
+
   return (
     <TouchableOpacity
       onPress={() => {

@@ -36,7 +36,7 @@ export default function Header() {
       </View>
       <TouchableOpacity
         onPress={() => {
-          router.push("/src/Screens/Cart");
+          router.push("/Screens/Cart");
         }}
         style={styles.backbutton}
       >

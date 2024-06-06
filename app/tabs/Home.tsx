@@ -33,7 +33,7 @@ export default function Home() {
   const [selectedTag, setselectedTag] = useState<TagRespData | undefined>();
 
   useEffect(() => {
-    fetchProductsByFilter()
+    fetchProductsByFilter({})
       .then((res) => {
         Setproducts(res.data);
         console.log("here is a list of products", res.data);
@@ -44,7 +44,7 @@ export default function Home() {
 
     fetchTagsByFilter()
       .then((res) => {
-        console.log("here is a list of Tags", res.data);
+        console.log("here is a list of Tags", res.data.content.length);
         setTags(res.data);
       })
       .catch((err) => {
@@ -67,7 +67,7 @@ export default function Home() {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              router.push("/src/Screens");
+              router.push("/Screens");
             }}
             style={Gstyles.searchinput}
           >
@@ -81,7 +81,7 @@ export default function Home() {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              router.push("/src/Screens/Cart");
+              router.push("/Screens/Cart");
             }}
             style={styles.cart}
           >
@@ -127,10 +127,9 @@ export default function Home() {
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
             numColumns={2}
-            keyExtractor={(item) => item.id}
+            // keyExtractor={(item) => item.id}
             columnWrapperStyle={styles.row}
-            renderItem={Productcard}
-            // pagingEnabled={true}
+            renderItem={({ item }) => <Productcard item={item} />} // pagingEnabled={true}
           />
         </View>
       </View>

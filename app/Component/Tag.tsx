@@ -1,4 +1,4 @@
-import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TagRespData } from "../client/types/responses/StockResponses";
 import { COLORSS, Tagcolors } from "../constants/theme";
@@ -9,9 +9,9 @@ export default function Tag({ item }: { item: TagRespData }) {
   );
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <View style={styles.container}>
       <Text style={[styles.TagText, { color: Color }]}>{item.name}</Text>
-    </TouchableOpacity>
+    </View>
   );
 }
 

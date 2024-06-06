@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
+  Button,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
@@ -16,10 +17,14 @@ import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { UserType } from "../client/types/responses/Client";
-
+import Modal from "react-native-modal";
 export default function Account() {
   const [User, setUser] = useState<UserType | undefined>();
+  const [isModalVisible, setModalVisible] = useState(false);
 
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
   const getCurrentUser = async () => {
     const currentUser = GoogleSignin.getCurrentUser().then((res) => {
       console.log("here is the user ", res);
@@ -67,56 +72,82 @@ export default function Account() {
         ></ActivityIndicator>
       )}
       <View style={styles.itemcontainer}>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={styles.items}
           onPress={() => {
-            router.push("/Screens/Editprofile");
+            router.push("/Screens/Orders");
           }}
         >
           <View style={styles.itemicon}>
-            <AntDesign name="menuunfold" size={24} color="black" />
-          </View>
-          <View style={styles.itemcontent}>
-            <Text>Edit Profile</Text>
-            <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
-          </View>
-        </TouchableOpacity> */}
-        <TouchableOpacity style={styles.items}>
-          <View style={styles.itemicon}>
-            <MaterialIcons name="payment" size={24} color="black" />
+            <MaterialIcons name="payment" size={24} color={COLORSS.Green} />
           </View>
           <View style={styles.itemcontent}>
             <Text>My orders</Text>
-            <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
+            <Entypo name="chevron-right" size={24} color={"black"} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.items}>
+        <TouchableOpacity
+          style={styles.items}
+          onPress={() => {
+            router.push("/Screens/BillingAdress");
+          }}
+        >
           <View style={styles.itemicon}>
-            <AntDesign name="setting" size={24} color="black" />
+            <Entypo name="address" size={24} color={COLORSS.Green} />
+          </View>
+          <View style={styles.itemcontent}>
+            <Text>Billing address</Text>
+            <Entypo name="chevron-right" size={24} color={"black"} />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.items}
+          onPress={() => {
+            router.push("/Screens/Settings");
+          }}
+        >
+          <View style={styles.itemicon}>
+            <AntDesign name="setting" size={24} color={COLORSS.Green} />
           </View>
           <View style={styles.itemcontent}>
             <Text>Settings</Text>
-            <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
+            <Entypo name="chevron-right" size={24} color={"black"} />
           </View>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.items}>
+        <TouchableOpacity onPress={toggleModal} style={styles.items}>
           <View style={styles.itemicon}>
-            {/* <Bolt color={COLORSS.lightgreen} size={30} /> */}
-          </View>
-          <View style={styles.itemcontent}>
-            <Text>Billing</Text>
-            <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={signOut} style={styles.items}>
-          <View style={styles.itemicon}>
-            <AntDesign name="logout" size={24} color="black" />
+            <AntDesign name="logout" size={24} color={COLORSS.Green} />
           </View>
           <View style={styles.itemcontent}>
             <Text>Sign Out</Text>
-            <Entypo name="chevron-right" size={24} color={COLORSS.Green} />
+            <Entypo name="chevron-right" size={24} color={"black"} />
           </View>
         </TouchableOpacity>
+        <Modal
+          style={{ justifyContent: "center", alignItems: "center" }}
+          onBackdropPress={() => setModalVisible(false)}
+          isVisible={isModalVisible}
+        >
+          <View style={styles.ModalSignout}>
+            <View
+              style={{
+                height: "60%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={[Gstyles.BigButtonText, { color: "black" }]}>
+                voulez vous vous déconnecter
+              </Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-evenly" }}
+            >
+              <Button title="Canacel"></Button>
+              <Button onPress={signOut} title="Sign Out" color={"red"}></Button>
+            </View>
+          </View>
+        </Modal>
       </View>
     </View>
   );
@@ -175,5 +206,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomColor: "lightgray",
     borderBottomWidth: 0.75,
+  },
+  ModalSignout: {
+    width: "80%",
+    height: 120,
+    backgroundColor: "white",
   },
 });

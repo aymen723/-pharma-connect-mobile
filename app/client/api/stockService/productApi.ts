@@ -2,6 +2,8 @@ import axios, { AxiosRequestConfig } from "axios";
 import { STOCK_SERVICE_URL_V1 } from "../../config/settings";
 import {
   AvailableStockRespData,
+  PharmacyRespData,
+  PharmacyUptime,
   ProductRespData,
 } from "../../types/responses/StockResponses";
 import { Filter } from "../../types/requests";
@@ -28,6 +30,17 @@ export const fetchProductsByFilter = (
   return axios<Page<ProductRespData>>({
     url: STOCK_SERVICE_URL_V1 + `/medical-products`,
     params,
+    method: "GET",
+    ...config,
+  });
+};
+
+export const fetchPharmacyUptime = (
+  pharmacyId: PharmacyRespData["id"],
+  config?: AxiosRequestConfig
+) => {
+  return axios<PharmacyUptime>({
+    url: STOCK_SERVICE_URL_V1 + `/pharmacies/${pharmacyId}/uptimes`,
     method: "GET",
     ...config,
   });

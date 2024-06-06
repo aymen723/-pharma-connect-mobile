@@ -40,8 +40,7 @@ export default function Signin() {
   const _signIn = async () => {
     try {
       GoogleSignin.configure({
-        iosClientId:
-          "com.googleusercontent.apps.396902336566-9am1bgbofebv4mvmmact86uj2s690kc0",
+        iosClientId: process.env.CLIENT_ID_IOS,
         offlineAccess: true,
         webClientId: process.env.CLIENT_ID_WEB,
         androidClientId: process.env.CLIENT_ID_ANDROID,

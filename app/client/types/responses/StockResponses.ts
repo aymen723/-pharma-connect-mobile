@@ -41,7 +41,8 @@ export type PharmacyRespData = {
   location: Location;
   supportPayment: boolean;
   enabled: boolean;
-  picture?: string;
+  picture?: string | null;
+  phoneNumber?: string | null;
 };
 
 export type StockId = {
@@ -55,4 +56,25 @@ export type AvailableStockRespData = {
   pharmacy: PharmacyRespData;
   price?: number | null;
   purchasable: boolean;
+};
+
+export type WeekDay =
+  | "SUNDAY"
+  | "MONDAY"
+  | "TUESDAY"
+  | "WEDNESDAY"
+  | "THURSDAY"
+  | "FRIDAY"
+  | "SATURDAY";
+
+export type UptimeRespData = {
+  id: number;
+  openTime: string;
+  closeTime: string;
+  day: WeekDay;
+};
+
+export type PharmacyUptime = {
+  uptimes?: UptimeRespData[];
+  open: boolean;
 };

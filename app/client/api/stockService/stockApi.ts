@@ -47,7 +47,6 @@ export const fetchStockFromPharmacy = (
     method: "GET",
     ...config,
   }).catch((err) => {
-    console.log("fetch pharmacy stock error", err);
     return err;
   });
 };
