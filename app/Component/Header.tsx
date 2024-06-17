@@ -14,7 +14,7 @@ export default function Header() {
   const params = useLocalSearchParams();
 
   return (
-    <View style={Gstyles.headerContainer}>
+    <View style={[Gstyles.headerContainer, styles.headerpostion]}>
       <TouchableOpacity
         onPress={() => {
           router.back();
@@ -63,5 +63,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginLeft: 10,
+  },
+  headerpostion: {
+    zIndex: 1,
   },
 });

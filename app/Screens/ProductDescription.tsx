@@ -19,6 +19,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import Modal from "react-native-modal";
 import { useCartStore } from "../zustand/store";
 import { fetchPharmaciesByFilter } from "../client/api/stockService/pharmacyApi";
+import Header from "../Component/Header";
 
 export default function ProductDescription() {
   const { id, name } = useLocalSearchParams();
@@ -104,7 +105,10 @@ export default function ProductDescription() {
                 width: "40%",
               }}
               onPress={() => {
-                append(Product);
+                append({
+                  product: Product,
+                  count: 1,
+                });
                 console.log(cart.length);
               }}
             >
@@ -114,7 +118,6 @@ export default function ProductDescription() {
                 color={COLORSS.Green}
               />
               <Text style={{ fontWeight: "bold", color: "gray" }}>
-                {" "}
                 Add to cart
               </Text>
             </TouchableOpacity>

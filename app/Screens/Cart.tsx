@@ -8,42 +8,48 @@ import {
 import React, { useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
 import { StatusBar } from "expo-status-bar";
-import CartItem from "../Component/CartItem";
 import CartPayment from "../Component/CartPayment";
 import { router } from "expo-router";
 import { ProductRespData } from "../client/types/responses/StockResponses";
-import { useCartStore } from "../zustand/store";
-
+import { CartItemtype, useCartStore } from "../zustand/store";
+import CartItem from "../Component/CartItem";
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 export default function Cart() {
-  const [NotEmpty, setNotEmpty] = useState(true);
   const { cart, deleteitem } = useCartStore();
 
-  const renderitem = ({ item }: { item: ProductRespData }) => {
-    return <CartItem item={item} key={item.id} />;
+  const renderitem = ({ item }: { item: CartItemtype }) => {
+    return <CartItem item={item} key={item.product.id} />;
   };
 
   return (
     <View style={Gstyles.container}>
       <StatusBar backgroundColor={COLORSS.maingray}></StatusBar>
 
-      {NotEmpty ? (
+      {cart.length > 0 ? (
         <>
           <View style={Styles.ContainerList}>
             <View style={Styles.additem}>
               <Text style={{ color: "rgba(9, 15, 71, 0.45)" }}>
                 {cart.length} Items in your cart
               </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  // router.back();
-                }}
-                style={{ flexDirection: "row" }}
-              >
-                {/* <Plus color={COLORSS.purpal} size={20} /> */}
-                <Text style={{ color: COLORSS.purpal }}>Add More</Text>
-              </TouchableOpacity>
+              <View style={{ width: 100 }}>
+                <BouncyCheckbox
+                  size={25}
+                  fillColor={COLORSS.Green}
+                  unFillColor={COLORSS.maingray}
+                  text="Delivery"
+                  iconStyle={{ borderColor: COLORSS.Green }}
+                  innerIconStyle={{ borderWidth: 2 }}
+                  textStyle={{
+                    color: "rgba(9, 15, 71, 0.45)",
+                    fontFamily: "JosefinSans-Regular",
+                  }}
+                  onPress={(isChecked: boolean) => {
+                    console.log(isChecked);
+                  }}
+                />
+              </View>
             </View>
-            <Text>zdzdz</Text>
             <FlatList
               data={cart}
               showsHorizontalScrollIndicator={false}

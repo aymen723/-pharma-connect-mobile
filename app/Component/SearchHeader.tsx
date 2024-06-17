@@ -18,53 +18,49 @@ import Animated, {
 } from "react-native-reanimated";
 import { fetchTagsByFilter } from "../client/api/stockService/tagApi";
 import { Page } from "../client/types/responses";
-import { TagRespData } from "../client/types/responses/StockResponses";
+import {
+  ProductRespData,
+  TagRespData,
+} from "../client/types/responses/StockResponses";
 import Tag from "./Tag";
 import { TextInput } from "react-native-element-textinput";
 import { MultiSelect } from "react-native-element-dropdown";
-
-const data = [
-  { label: "Item 1", value: "1" },
-  { label: "Item 2", value: "2" },
-  { label: "Item 3", value: "3" },
-  { label: "Item 4", value: "4" },
-  { label: "Item 5", value: "5" },
-  { label: "Item 6", value: "6" },
-  { label: "Item 7", value: "7" },
-  { label: "Item 8", value: "8" },
-];
+import { useCartStore } from "../zustand/store";
+import { Feather } from "@expo/vector-icons";
 export default function SearchHeader({
   SearchValue,
   SearchInput,
   TagSelected,
+  ListProducts,
+  setListProducts,
 }: {
   SearchValue: string;
+  ListProducts: ProductRespData[];
 }) {
+  const { setCart } = useCartStore();
   const [Enabled, setEnabled] = useState<boolean>(false);
   const height = useSharedValue<number>(100);
-  const [Tags, setTags] = useState<Page<TagRespData> | undefined>();
-  const [Tagtest, setTagtest] = useState([]);
-  const [TagsList, setTagsList] = useState<string[] | []>([]);
+  const [Tags, setTags] = useState([]);
   const [selected, setSelected] = useState([]);
   function hundelSearch(e: string) {
     SearchInput(e);
   }
 
   const handlePress = () => {
+    console.log("az in searchheader", ListProducts);
     if (height.value === 100) {
-      height.value += 100;
+      height.value += 160;
       setEnabled(true);
       fetchTagsByFilter()
         .then((res) => {
           console.log("here is a list of Tags", res.data.content);
-          setTags(res.data);
           const result = res.data.content.map((tag) => ({
             label: tag.name,
             value: tag.id,
           }));
           console.log(result);
 
-          setTagtest(result);
+          setTags(result);
         })
         .catch((err) => {
           console.log("here error in tags func", err);
@@ -76,27 +72,29 @@ export default function SearchHeader({
     height: withSpring(height.value),
   }));
 
-  // const RenderItem = (item) => {
-  //   return (
-  //     <TouchableOpacity
-  //       onLongPress={() => {
-  //         setTagsList((oldArray) => [...oldArray, item.item.name]);
-  //       }}
-  //       onPress={() => {
-  //         TagSelected(item.item.id);
-  //         console.log(item.item.name);
-  //       }}
-  //     >
-  //       <Tag item={item.item} key={item.index} />
-  //     </TouchableOpacity>
-  //   );
-  // };
   const renderItem = (item) => {
     return (
       <View style={styles.item}>
         <Text style={styles.selectedTextStyle}>{item.label}</Text>
         <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
       </View>
+    );
+  };
+
+  const renderProducts = ({ item }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setListProducts((prevState) =>
+            prevState.filter((existing) => existing !== item)
+          );
+        }}
+      >
+        <View style={styles.selectedStyle}>
+          <Text style={styles.textSelectedStyle}>{item.name}</Text>
+          <AntDesign color="black" name="delete" size={17} />
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -141,58 +139,91 @@ export default function SearchHeader({
         </TouchableOpacity>
       </View>
       {Enabled ? (
-        // <View>
-        //   <FlatList
-        //     style={styles.TagList}
-        //     data={Tags?.content}
-        //     contentContainerStyle={{ height: 40 }}
-        //     showsHorizontalScrollIndicator={false}
-        //     showsVerticalScrollIndicator={false}
-        //     overScrollMode="never"
-        //     // numColumns={5}
-
-        //     horizontal={true}
-        //     renderItem={RenderItem}
-        //   />
-        // </View>
-
-        <View style={styles.TagView}>
-          <MultiSelect
-            style={styles.dropdown}
-            placeholderStyle={styles.placeholderStyle}
-            selectedTextStyle={styles.selectedTextStyle}
-            inputSearchStyle={styles.inputSearchStyle}
-            iconStyle={styles.iconStyle}
-            data={Tagtest}
-            labelField="label"
-            valueField="value"
-            placeholder="Select item"
-            value={selected}
-            search
-            searchPlaceholder="Search..."
-            maxSelect={3}
-            onChange={(item) => {
-              setSelected(item);
+        <>
+          <View style={styles.TagView}>
+            <MultiSelect
+              style={styles.dropdown}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={Tags}
+              labelField="label"
+              valueField="value"
+              placeholder="Select Tags"
+              value={selected}
+              search
+              searchPlaceholder="Search..."
+              maxSelect={3}
+              onChange={(item) => {
+                setSelected(item);
+                console.log(selected);
+                TagSelected(item);
+              }}
+              renderLeftIcon={() => (
+                <AntDesign
+                  style={styles.icon}
+                  color="black"
+                  name="Safety"
+                  size={20}
+                />
+              )}
+              renderItem={renderItem}
+              renderSelectedItem={(item, unSelect) => (
+                <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
+                  <View style={styles.selectedStyle}>
+                    <Text style={styles.textSelectedStyle}>{item.label}</Text>
+                    <AntDesign color="black" name="delete" size={17} />
+                  </View>
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+          <View
+            style={{
+              width: "100%",
+              height: 60,
+              flexDirection: "row",
+              justifyContent: "space-evenly",
             }}
-            renderLeftIcon={() => (
-              <AntDesign
-                style={styles.icon}
-                color="black"
-                name="Safety"
-                size={20}
+          >
+            <View style={{ width: "80%" }}>
+              <FlatList
+                contentContainerStyle={{
+                  alignItems: "center",
+                }}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={ListProducts}
+                renderItem={renderProducts}
+                keyExtractor={(item) => item.id.toString()}
               />
-            )}
-            renderItem={renderItem}
-            renderSelectedItem={(item, unSelect) => (
-              <TouchableOpacity onPress={() => unSelect && unSelect(item)}>
-                <View style={styles.selectedStyle}>
-                  <Text style={styles.textSelectedStyle}>{item.label}</Text>
-                  <AntDesign color="black" name="delete" size={17} />
-                </View>
-              </TouchableOpacity>
-            )}
-          />
-        </View>
+            </View>
+
+            <TouchableOpacity
+              style={{
+                width: "17%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={() => {
+                if (ListProducts.length > 1) {
+                  router.push("/Screens/MapSearch");
+                  setCart(
+                    ListProducts.map((item) => {
+                      return {
+                        product: item,
+                        count: 1,
+                      };
+                    })
+                  );
+                }
+              }}
+            >
+              <Feather name="search" size={24} color={COLORSS.Green} />
+            </TouchableOpacity>
+          </View>
+        </>
       ) : null}
     </Animated.View>
   );
@@ -213,8 +244,8 @@ const styles = StyleSheet.create({
   },
   SearchView: {
     flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "red",
+    // borderWidth: 1,
+    // borderColor: "red",
 
     justifyContent: "center",
     alignItems: "center",
@@ -232,11 +263,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   TagView: {
-    borderWidth: 1,
-    borderColor: "red",
+    // borderWidth: 1,
+    // borderColor: "red",
     height: 120,
     width: "100%",
     alignItems: "center",
+    paddingTop: 15,
   },
   TagList: {
     width: "100%",

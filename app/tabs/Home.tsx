@@ -7,16 +7,15 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { COLORSS, Gstyles } from "../constants/theme";
 import Productcard from "../Component/Productcard";
-import { router } from "expo-router";
 import { DrawerActions } from "@react-navigation/native";
+import { router } from "expo-router";
 import { useNavigation } from "@react-navigation/core";
 import { fetchProductsByFilter } from "../client/api/stockService/productApi";
 import { fetchTagsByFilter } from "../client/api/stockService/tagApi";
-
 import Tag from "../Component/Tag";
 import { Page } from "../client/types/responses";
 import {
@@ -27,44 +26,68 @@ import Feather from "@expo/vector-icons/Feather";
 import Entypo from "@expo/vector-icons/Entypo";
 
 export default function Home() {
-  const [products, Setproducts] = useState<Page<ProductRespData> | undefined>();
+  const [Products, setProducts] = useState<ProductRespData[]>([]);
   const [Tags, setTags] = useState<Page<TagRespData> | undefined>();
   const navigation = useNavigation();
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [selectedTag, setselectedTag] = useState<TagRespData | undefined>();
 
+  const fetchProducts = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
+
+    setLoadingMore(true);
+    try {
+      const res = await fetchProductsByFilter({
+        page,
+        tags: selectedTag?.id,
+      });
+      setProducts((prevProducts) => [...prevProducts, ...res.data.content]);
+      setHasMore(res.data.content.length > 0);
+    } catch (err) {
+      console.error("Error fetching products", err);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [page, loadingMore, hasMore, selectedTag]);
+
   useEffect(() => {
-    fetchProductsByFilter({})
+    setLoading(true);
+    fetchProductsByFilter({ tags: selectedTag?.id, page: 0 })
       .then((res) => {
-        Setproducts(res.data);
-        console.log("here is a list of products", res.data);
+        setProducts(res.data.content);
+        setHasMore(res.data.content.length > 0);
+        console.log(res.data.content);
       })
       .catch((err) => {
-        console.log("here error in products func", err);
+        console.error("Error fetching initial products", err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
 
     fetchTagsByFilter()
       .then((res) => {
-        console.log("here is a list of Tags", res.data.content.length);
         setTags(res.data);
       })
       .catch((err) => {
-        console.log("here error in tags func", err);
+        console.error("Error fetching tags", err);
       });
-  }, []);
+  }, [selectedTag]);
 
+  const handleLoadMore = () => {
+    if (!loadingMore && hasMore) {
+      setPage((prevPage) => prevPage + 1);
+      fetchProducts();
+    }
+  };
   return (
     <View style={Gstyles.container}>
       <StatusBar backgroundColor={"white"}></StatusBar>
       <View style={styles.searchbox}>
         <View style={styles.inputView}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.dispatch(DrawerActions.openDrawer());
-            }}
-            style={styles.sidebar}
-          >
-            <Entypo name="menu" size={24} color="black" />
-          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               router.push("/Screens");
@@ -92,15 +115,37 @@ export default function Home() {
 
       <View style={styles.productbox}>
         <View style={styles.TagContainer}>
+          <View style={{ width: "20%", justifyContent: "center" }}>
+            <TouchableOpacity
+              onPress={() => {
+                setselectedTag(undefined);
+              }}
+              style={styles.TagView}
+            >
+              <Text style={styles.TagText}>Tous</Text>
+            </TouchableOpacity>
+          </View>
           <ScrollView
             horizontal={true}
-            style={{ width: "100%", height: "100%" }}
+            style={{
+              width: "85%",
+              height: "100%",
+            }}
             contentContainerStyle={{ alignItems: "center" }}
             showsHorizontalScrollIndicator={false}
           >
             {Tags ? (
               Tags.content.map((item) => {
-                return <Tag key={item.id} item={item}></Tag>;
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setselectedTag(item);
+                    }}
+                    key={item.id}
+                  >
+                    <Tag key={item.id} item={item}></Tag>
+                  </TouchableOpacity>
+                );
               })
             ) : (
               <View
@@ -122,7 +167,7 @@ export default function Home() {
           <FlatList
             style={{ backgroundColor: COLORSS.white }}
             contentContainerStyle={styles.listscroll}
-            data={products?.content}
+            data={Products}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             overScrollMode="never"
@@ -130,6 +175,11 @@ export default function Home() {
             // keyExtractor={(item) => item.id}
             columnWrapperStyle={styles.row}
             renderItem={({ item }) => <Productcard item={item} />} // pagingEnabled={true}
+            onEndReached={handleLoadMore}
+            onEndReachedThreshold={0.5}
+            ListFooterComponent={
+              loadingMore && <ActivityIndicator size="large" color="green" />
+            }
           />
         </View>
       </View>
@@ -152,13 +202,14 @@ const styles = StyleSheet.create({
   productlist: {
     flex: 1,
     width: "100%",
-    borderWidth: 1,
-    borderColor: "red",
+    // borderWidth: 1,
+    // borderColor: "red",
   },
   TagContainer: {
     width: "100%",
     flex: 0.1,
     backgroundColor: "white",
+    flexDirection: "row",
   },
   listscroll: {
     width: "100%",
@@ -171,8 +222,8 @@ const styles = StyleSheet.create({
   },
   inputView: {
     height: "100%",
-    borderColor: "red",
-    borderWidth: 1,
+    // borderColor: "red",
+    // borderWidth: 1,
     width: "100%",
     display: "flex",
     justifyContent: "space-evenly",
@@ -196,5 +247,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
     backgroundColor: "ghostwhite",
+  },
+  TagView: {
+    backgroundColor: COLORSS.maingray,
+    padding: 10,
+    paddingHorizontal: 15,
+    borderRadius: 15,
+    marginLeft: 5,
+    marginRight: 5,
+  },
+  TagText: {
+    fontSize: 16,
+    fontWeight: "bold",
+
+    color: COLORSS.Green,
   },
 });

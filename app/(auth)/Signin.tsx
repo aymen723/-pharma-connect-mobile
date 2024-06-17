@@ -21,15 +21,12 @@ import {
   statusCodes,
 } from "@react-native-google-signin/google-signin";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useUserStore } from "../zustand/store";
 
 browser.maybeCompleteAuthSession();
 
 export default function Signin() {
-  const [token, settoken] = useState<string | undefined>();
-
-  const [user, setuser] = useState(null);
-
-  const [userInfo, setUserInfo] = useState();
+  // const { user, setUser } = useUserStore();
 
   const [request, response, promptasync] = Google.useAuthRequest({
     clientId: process.env.OUSSAMA_Client_ID,
@@ -52,6 +49,7 @@ export default function Signin() {
         console.log("here in google signin", res);
 
         AsyncStorage.setItem("@User", JSON.stringify(res));
+        AsyncStorage.setItem("@token", JSON.stringify(res.idToken));
 
         router.replace("/tabs/Home");
       });
@@ -78,7 +76,6 @@ export default function Signin() {
 
   const getCurrentUser = async () => {
     const currentUser = GoogleSignin.getCurrentUser();
-    // setState({ currentUser });
     console.log(currentUser);
   };
 

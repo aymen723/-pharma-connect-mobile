@@ -82,7 +82,7 @@ export default function Account() {
             <MaterialIcons name="payment" size={24} color={COLORSS.Green} />
           </View>
           <View style={styles.itemcontent}>
-            <Text>My orders</Text>
+            <Text style={{ fontWeight: "600" }}>My orders</Text>
             <Entypo name="chevron-right" size={24} color={"black"} />
           </View>
         </TouchableOpacity>
@@ -96,7 +96,21 @@ export default function Account() {
             <Entypo name="address" size={24} color={COLORSS.Green} />
           </View>
           <View style={styles.itemcontent}>
-            <Text>Billing address</Text>
+            <Text style={{ fontWeight: "600" }}>Billing address</Text>
+            <Entypo name="chevron-right" size={24} color={"black"} />
+          </View>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.items}
+          onPress={() => {
+            router.push("/Screens/Chifa");
+          }}
+        >
+          <View style={styles.itemicon}>
+            <Entypo name="address" size={24} color={COLORSS.Green} />
+          </View>
+          <View style={styles.itemcontent}>
+            <Text style={{ fontWeight: "600" }}>Chifa</Text>
             <Entypo name="chevron-right" size={24} color={"black"} />
           </View>
         </TouchableOpacity>
@@ -110,7 +124,7 @@ export default function Account() {
             <AntDesign name="setting" size={24} color={COLORSS.Green} />
           </View>
           <View style={styles.itemcontent}>
-            <Text>Settings</Text>
+            <Text style={{ fontWeight: "600" }}>Settings</Text>
             <Entypo name="chevron-right" size={24} color={"black"} />
           </View>
         </TouchableOpacity>
@@ -119,7 +133,7 @@ export default function Account() {
             <AntDesign name="logout" size={24} color={COLORSS.Green} />
           </View>
           <View style={styles.itemcontent}>
-            <Text>Sign Out</Text>
+            <Text style={{ fontWeight: "600" }}>Sign Out</Text>
             <Entypo name="chevron-right" size={24} color={"black"} />
           </View>
         </TouchableOpacity>
@@ -165,7 +179,7 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 50,
     borderWidth: 3,
-    resizeMode: "contain",
+    resizeMode: "cover",
     borderColor: COLORSS.Green,
   },
   profilesection2: {

@@ -1,26 +1,33 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { COLORSS } from "../constants/theme";
 import { ProductRespData } from "../client/types/responses/StockResponses";
-import { useCartStore } from "../zustand/store";
-export default function CartItem({ item }: { item: ProductRespData }) {
+import { CartItemtype, useCartStore } from "../zustand/store";
+
+export default function CartItem({ item }: { item: CartItemtype }) {
+  const { deleteitem } = useCartStore();
+
   return (
     <View style={styles.itemcontainer}>
       <View style={styles.picontainer}>
-        <Image style={styles.itempic} source={{ uri: item.picture }}></Image>
+        <Image
+          style={styles.itempic}
+          source={{ uri: item.product.picture }}
+        ></Image>
       </View>
       <View style={styles.infoitem}>
         <View style={styles.itemtitle}>
           <View style={styles.titlesection}>
-            <Text style={styles.infotext}>{item.name}</Text>
+            <Text style={styles.infotext}>{item.product.name}</Text>
           </View>
           <TouchableOpacity
             style={{
               justifyContent: "center",
               alignItems: "center",
-              borderColor: "red",
-              borderWidth: 1,
+            }}
+            onPress={() => {
+              deleteitem(item);
             }}
           >
             <AntDesign
@@ -33,11 +40,31 @@ export default function CartItem({ item }: { item: ProductRespData }) {
         <View style={[styles.itemtitle, { height: "40%" }]}>
           <View style={[styles.titlesection, { width: "50%" }]}>
             <Text style={[styles.infotext, { fontSize: 16 }]}>
-              DA {item.price}
+              DA {item.product.price}
             </Text>
           </View>
-          <View>
-            <Text>++</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              width: "50%",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={{
+                borderRadius: 20,
+                width: 20,
+                height: 20,
+                backgroundColor: "lightred",
+              }}
+            >
+              <AntDesign name="minus" size={16} color="black" />
+            </TouchableOpacity>
+            <Text>{item.count}</Text>
+            <TouchableOpacity>
+              <AntDesign name="plus" size={16} color="black" />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -51,7 +78,9 @@ const styles = StyleSheet.create({
     height: 100,
     flexDirection: "row",
     borderBottomColor: "lightgray",
-    borderBottomWidth: 1,
+    borderBottomWidth: 0.75,
+    marginBottom: 5,
+    marginTop: 5,
   },
   itempic: {
     width: "100%",
@@ -64,34 +93,34 @@ const styles = StyleSheet.create({
     height: "100%",
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "red",
+    // borderWidth: 1,
+    // borderColor: "red",
   },
   infoitem: {
     width: "70%",
     height: "100%",
-    borderWidth: 1,
-    borderColor: "green",
+    // borderWidth: 1,
+    // borderColor: "green",
   },
   itemtitle: {
     width: "100%",
     height: "60%",
-    // borderWidth: 1,
-    // borderColor: "black",
+    borderWidth: 1,
+    borderColor: "black",
     flexDirection: "row",
   },
   titlesection: {
     width: "90%",
     height: "100%",
-    borderColor: "red",
-    borderWidth: 1,
+    // borderColor: "red",
+    // borderWidth: 1,
     justifyContent: "center",
     alignItems: "flex-start",
   },
   infotext: {
     color: COLORSS.textcolor,
     fontWeight: "600",
-    fontSize: 15,
+    fontSize: 17,
     lineHeight: 18,
   },
 });

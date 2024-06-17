@@ -6,17 +6,23 @@ import { router } from "expo-router";
 
 export default function CartHeader({ title }: { title: string }) {
   return (
-    <View style={[Gstyles.headerContainer, styles.center]}>
-      <TouchableOpacity
-        style={{ width: "20%", justifyContent: "center", alignItems: "center" }}
-        onPress={() => {
-          router.back();
-        }}
-      >
-        <Entypo name="chevron-left" size={30} color="black" />
-      </TouchableOpacity>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>{title}</Text>
+    <View style={{ flexDirection: "row" }}>
+      <View style={[Gstyles.headerContainer, styles.center]}>
+        <TouchableOpacity
+          style={{
+            width: "20%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          onPress={() => {
+            router.back();
+          }}
+        >
+          <Entypo name="chevron-left" size={30} color="black" />
+        </TouchableOpacity>
+        <View>
+          <Text style={{ fontSize: 20, fontWeight: "bold" }}>{title}</Text>
+        </View>
       </View>
     </View>
   );

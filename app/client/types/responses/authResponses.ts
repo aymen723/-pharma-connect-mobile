@@ -5,6 +5,7 @@ export type TokenData = {
 };
 
 export type UserRole = "CLIENT" | "ADMIN" | "PHARMACY";
+
 export type UserProfile = {
   id: number;
   username: string;

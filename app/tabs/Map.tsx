@@ -1,4 +1,4 @@
-import { View, StyleSheet, ActivityIndicator } from "react-native";
+import { View, StyleSheet, ActivityIndicator, TextInput } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Gstyles } from "../constants/theme";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
@@ -15,8 +15,9 @@ import MapHeader from "../Component/MapHeader";
 import { Button } from "@rneui/base";
 import FilterModal from "../Component/FilterModal";
 import { Text } from "react-native";
-
+import { useWindowDimensions } from "react-native";
 export default function Map() {
+  const { height, width } = useWindowDimensions();
   const [loc, setLocation] = useState<LocationObject | undefined>();
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [region, setregion] = useState<Region | undefined>();
@@ -25,7 +26,7 @@ export default function Map() {
   >();
   const [Range, SetRange] = useState(0);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
-  const [Search, SetSearch] = useState<string | undefined>();
+  const [Search, SetSearch] = useState<string | undefined>("");
   const [Pharmacy, SetPharmacy] = useState<PharmacyRespData | undefined>();
   const handleModalToggle = () => {
     setModalVisible(!isModalVisible);
@@ -58,25 +59,9 @@ export default function Map() {
   }
 
   useEffect(() => {
-    GetLocation();
-    fetchPharmaciesByFilter()
-      .then((res) => {
-        console.log(res.data);
-        console.log("here the lenght", res.data.numberOfElements);
-        SetPharmacies(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    console.log("height", height);
 
-  function test() {
-    const Filterobj: PharmacyFilterParams = {
-      name: Search,
-      range: Range,
-    };
-    console.log(Filterobj);
-    fetchPharmaciesByFilter(Filterobj)
+    fetchPharmaciesByFilter({ name: Search })
       .then((res) => {
         console.log(res.data);
         console.log("here the lenght", res.data.numberOfElements);
@@ -85,12 +70,25 @@ export default function Map() {
       .catch((err) => {
         console.log(err);
       });
-  }
+  }, [Search]);
+
+  useEffect(() => {
+    GetLocation();
+  }, []);
 
   return (
     <>
       {loc ? (
-        <View style={Gstyles.container}>
+        <View style={[Gstyles.container, { alignItems: "center" }]}>
+          <View style={styles.headersearch}>
+            <TextInput
+              style={Gstyles.searchinput}
+              onChangeText={(e) => SetSearch(e)}
+              value={Search}
+              placeholder="Pharamcies"
+              keyboardType="numeric"
+            ></TextInput>
+          </View>
           <MapView
             initialRegion={{
               latitude: loc.coords.latitude,
@@ -104,6 +102,7 @@ export default function Map() {
               // console.log(e);
             }}
             style={styles.map}
+            mapPadding={{ top: height - 120, right: 0, bottom: 0, left: 0 }}
             provider={PROVIDER_GOOGLE}
             showsUserLocation
             showsMyLocationButton
@@ -157,6 +156,15 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
+  },
+  headersearch: {
+    position: "absolute",
+    width: "80%",
+    borderRadius: 50,
+    height: 50,
+    backgroundColor: "white",
+    top: 20,
+    zIndex: 1,
   },
 });
 

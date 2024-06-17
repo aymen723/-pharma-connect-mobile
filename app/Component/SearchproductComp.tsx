@@ -5,22 +5,12 @@ import { TouchableOpacity } from "react-native";
 import { router } from "expo-router";
 
 export default function SearchproductComp({ item }: { item: ProductRespData }) {
-  function locate() {
-    router.push({
-      pathname: `/Screens/ProductDescription`,
-      params: {
-        id: item.id,
-        name: item.name,
-      },
-    });
-  }
-
   return (
-    <TouchableOpacity
-      onPress={() => {
-        locate();
+    <View
+      style={{
+        flexDirection: "row",
+        width: "75%",
       }}
-      style={styles.container}
     >
       <View style={styles.ViewImage}>
         <Image style={styles.Image} source={{ uri: item.picture }}></Image>
@@ -28,7 +18,7 @@ export default function SearchproductComp({ item }: { item: ProductRespData }) {
       <View style={styles.TitleView}>
         <Text style={styles.Title}>{item.name}</Text>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 }
 
@@ -39,6 +29,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     borderBottomColor: "lightgray",
     borderBottomWidth: 0.75,
+    marginBottom: 5,
+    marginTop: 5,
   },
   ViewImage: {
     width: "30%",
