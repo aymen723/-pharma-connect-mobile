@@ -6,3 +6,9 @@ export type StockFilterParams = {
   products?: number[] | string[] | number | string;
   search?: string;
 };
+
+export type StockUpdateRequest = {
+  price?: number;
+  overridden?: boolean;
+  overriddenAvailability?: boolean;
+};

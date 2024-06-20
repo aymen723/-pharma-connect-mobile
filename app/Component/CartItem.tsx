@@ -6,7 +6,7 @@ import { ProductRespData } from "../client/types/responses/StockResponses";
 import { CartItemtype, useCartStore } from "../zustand/store";
 
 export default function CartItem({ item }: { item: CartItemtype }) {
-  const { deleteitem } = useCartStore();
+  const { deleteitem, increment, decrement } = useCartStore();
 
   return (
     <View style={styles.itemcontainer}>
@@ -18,7 +18,7 @@ export default function CartItem({ item }: { item: CartItemtype }) {
       </View>
       <View style={styles.infoitem}>
         <View style={styles.itemtitle}>
-          <View style={styles.titlesection}>
+          <View style={[styles.titlesection, { paddingLeft: 10 }]}>
             <Text style={styles.infotext}>{item.product.name}</Text>
           </View>
           <TouchableOpacity
@@ -38,8 +38,12 @@ export default function CartItem({ item }: { item: CartItemtype }) {
           </TouchableOpacity>
         </View>
         <View style={[styles.itemtitle, { height: "40%" }]}>
-          <View style={[styles.titlesection, { width: "50%" }]}>
-            <Text style={[styles.infotext, { fontSize: 16 }]}>
+          <View
+            style={[styles.titlesection, { width: "50%", paddingLeft: 10 }]}
+          >
+            <Text
+              style={[styles.infotext, { fontSize: 16, color: COLORSS.Green }]}
+            >
               DA {item.product.price}
             </Text>
           </View>
@@ -56,14 +60,35 @@ export default function CartItem({ item }: { item: CartItemtype }) {
                 borderRadius: 20,
                 width: 20,
                 height: 20,
-                backgroundColor: "lightred",
+                // backgroundColor: "lightred",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={() => {
+                decrement(item.product.id);
               }}
             >
-              <AntDesign name="minus" size={16} color="black" />
+              <AntDesign name="minussquare" size={20} color="#da1e37" />
             </TouchableOpacity>
-            <Text>{item.count}</Text>
-            <TouchableOpacity>
-              <AntDesign name="plus" size={16} color="black" />
+            <View>
+              <Text style={{ fontWeight: "bold", fontSize: 14 }}>
+                {item.count}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{
+                borderRadius: 20,
+                width: 20,
+                height: 20,
+                // backgroundColor: COLORSS.Green,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={() => {
+                increment(item.product.id);
+              }}
+            >
+              <AntDesign name="plussquare" size={20} color={COLORSS.Green} />
             </TouchableOpacity>
           </View>
         </View>
@@ -105,8 +130,7 @@ const styles = StyleSheet.create({
   itemtitle: {
     width: "100%",
     height: "60%",
-    borderWidth: 1,
-    borderColor: "black",
+
     flexDirection: "row",
   },
   titlesection: {

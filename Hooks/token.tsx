@@ -5,6 +5,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 //   AsyncStorage.removeItem("app-access-token");
 // };
 
-export const getLocalAccessToken = () => {
-  return AsyncStorage.getItem("token");
+export const getLocalAccessToken = async () => {
+  try {
+    const value = await AsyncStorage.getItem("@token");
+    if (value !== null) {
+      console.log(JSON.parse(value));
+      const tokendata = JSON.parse(value);
+
+      return tokendata.token;
+    }
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 };

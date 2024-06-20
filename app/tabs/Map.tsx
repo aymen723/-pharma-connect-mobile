@@ -1,6 +1,12 @@
-import { View, StyleSheet, ActivityIndicator, TextInput } from "react-native";
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
-import { Gstyles } from "../constants/theme";
+import { Gstyles, SHADOWS } from "../constants/theme";
 import MapView, { Marker, PROVIDER_GOOGLE, Region } from "react-native-maps";
 import * as Location from "expo-location";
 import { LocationObject } from "expo-location";
@@ -16,6 +22,7 @@ import { Button } from "@rneui/base";
 import FilterModal from "../Component/FilterModal";
 import { Text } from "react-native";
 import { useWindowDimensions } from "react-native";
+import { Entypo } from "@expo/vector-icons";
 export default function Map() {
   const { height, width } = useWindowDimensions();
   const [loc, setLocation] = useState<LocationObject | undefined>();
@@ -80,15 +87,28 @@ export default function Map() {
     <>
       {loc ? (
         <View style={[Gstyles.container, { alignItems: "center" }]}>
-          <View style={styles.headersearch}>
-            <TextInput
-              style={Gstyles.searchinput}
-              onChangeText={(e) => SetSearch(e)}
-              value={Search}
-              placeholder="Pharamcies"
-              keyboardType="numeric"
-            ></TextInput>
-          </View>
+          <>
+            <View style={styles.headersearch}>
+              <TextInput
+                style={[
+                  Gstyles.searchinput,
+                  { fontSize: 16, width: "75%", padding: 10 },
+                ]}
+                onChangeText={(e) => SetSearch(e)}
+                value={Search}
+                placeholder="Pharamcies"
+                keyboardType="web-search"
+              ></TextInput>
+              <TouchableOpacity
+                onPress={() => {
+                  handleModalToggle();
+                }}
+                style={styles.menubutton}
+              >
+                <Entypo name="menu" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+          </>
           <MapView
             initialRegion={{
               latitude: loc.coords.latitude,
@@ -159,12 +179,27 @@ const styles = StyleSheet.create({
   },
   headersearch: {
     position: "absolute",
-    width: "80%",
-    borderRadius: 50,
-    height: 50,
+    width: "90%",
+    borderRadius: 20,
+    height: 60,
     backgroundColor: "white",
     top: 20,
+    left: 20,
     zIndex: 1,
+    flexDirection: "row-reverse",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+    ...SHADOWS.medium,
+  },
+  menubutton: {
+    height: 50,
+    width: 50,
+    borderRadius: 50,
+
+    backgroundColor: "white",
+    zIndex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 

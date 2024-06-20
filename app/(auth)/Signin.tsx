@@ -21,13 +21,19 @@ import {
   statusCodes,
 } from "@react-native-google-signin/google-signin";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useUserStore } from "../zustand/store";
-
+import { useTokenStore, useUserStore } from "../zustand/store";
+import {
+  googleAccessAuthentication,
+  googleIdAuthentication,
+} from "../client/api/authService/authentication";
+import { LoginResp } from "../client/types/responses/authResponses";
 browser.maybeCompleteAuthSession();
 
 export default function Signin() {
   // const { user, setUser } = useUserStore();
-
+  const [authresponse, setauthresponse] = useState<LoginResp | undefined>();
+  const { user, setUser } = useUserStore();
+  const { token, setToken } = useTokenStore();
   const [request, response, promptasync] = Google.useAuthRequest({
     clientId: process.env.OUSSAMA_Client_ID,
     androidClientId: process.env.CLIENT_ID_ANDROID,
@@ -44,12 +50,18 @@ export default function Signin() {
         scopes: ["profile", "email"],
       });
       await GoogleSignin.hasPlayServices();
-      console.log("reached google sign in");
-      GoogleSignin.signIn().then((res) => {
-        console.log("here in google signin", res);
 
-        AsyncStorage.setItem("@User", JSON.stringify(res));
-        AsyncStorage.setItem("@token", JSON.stringify(res.idToken));
+      GoogleSignin.signIn().then((res) => {
+        if (res) {
+          AsyncStorage.setItem("@User", JSON.stringify(res));
+          setUser(res.user);
+          googleIdAuthentication(res.idToken as string).then((res) => {
+            console.log("here the googleIdAuthentication", res.data);
+            setauthresponse(res.data);
+            setToken(res.data.tokenData);
+            AsyncStorage.setItem("@token", JSON.stringify(res.data.tokenData));
+          });
+        }
 
         router.replace("/tabs/Home");
       });

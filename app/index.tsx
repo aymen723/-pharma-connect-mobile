@@ -19,7 +19,8 @@ export default function Loading() {
   async function CheckUser() {
     try {
       const value = await AsyncStorage.getItem("@User");
-      if (value !== null) {
+      const token = await AsyncStorage.getItem("@token");
+      if (value !== null && token !== null) {
         const object = JSON.parse(value as string);
         router.replace("/tabs/Home");
         // return <Redirect href={"/src/tabs"} />;

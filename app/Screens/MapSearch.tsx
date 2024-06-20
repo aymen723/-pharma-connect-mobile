@@ -247,6 +247,7 @@ export default function MapSearch() {
               style={styles.tobutton}
               onPress={() => {
                 router.push("/Screens/Cart");
+                setModalVisible(!isModalVisible);
               }}
             >
               <Feather name="shopping-cart" size={24} color="white" />

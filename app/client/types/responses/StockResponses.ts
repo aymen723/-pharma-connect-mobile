@@ -62,6 +62,7 @@ export type AvailableStockRespData = {
   product: ProductRespData;
   pharmacy: PharmacyRespData;
   price?: number | null;
+
   purchasable: boolean;
   privateData: PrivateStockData | null;
 };
@@ -90,6 +91,39 @@ export type PharmacyUptime = {
 export type BookmarkRespData = {
   id: number;
   accountId: number;
-  registeredProduct: Omit<ProductRespData, "tags"> | null;
-  products: Omit<ProductRespData, "tags">[];
+  registeredProduct?: Omit<ProductRespData, "tags"> | null;
+  products?: Omit<ProductRespData, "tags">[];
+  name: string;
+};
+
+export type PurchaseRespData = {
+  product: ProductRespData;
+  productPrice: number;
+  count: number;
+};
+
+export type OrderRespData = {
+  id: number;
+
+  secret: string;
+
+  deliveryId?: number | null;
+
+  accountId: number;
+
+  pharmacy: PharmacyRespData;
+
+  purchases: PurchaseRespData[];
+
+  paymentId: number | null;
+
+  checkoutPrice?: number | null;
+
+  status: "INITIALIZING" | "PENDING" | "CANCELED" | "DELIVERING" | "FINALISED";
+
+  date: string;
+
+  price: number;
+
+  deliveryPrice?: number | null;
 };

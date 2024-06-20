@@ -10,11 +10,12 @@ import { BookmarkRespData } from "../../types/responses/StockResponses";
 import { prepareSearchParams } from "../../util/dataTransformation";
 import axios, { AxiosRequestConfig } from "axios";
 
-export const fetchBookmarks = (
+export const fetchBookmarks = async (
   searchFilter?: Filter<BookmarkFilterParams>,
   config?: AxiosRequestConfig
 ) => {
   const params = prepareSearchParams(searchFilter);
+
   return axios<Page<BookmarkRespData>>({
     url: STOCK_SERVICE_URL_V1 + `/bookmarks`,
     headers: {

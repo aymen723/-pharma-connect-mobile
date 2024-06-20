@@ -1,6 +1,11 @@
 import { create } from "zustand";
 import { ProductRespData } from "../client/types/responses/StockResponses";
-import { UserProfile } from "../client/types/responses/authResponses";
+import {
+  LoginResp,
+  TokenData,
+  UserProfile,
+} from "../client/types/responses/authResponses";
+import { UserType } from "../client/types/responses/Client";
 
 export type CartItemtype = {
   product: ProductRespData;
@@ -13,6 +18,20 @@ type CartStore = {
   deleteitem: (object: CartItemtype) => void;
   deleteAll: () => void;
   setCart: (item: CartItemtype[]) => void;
+  increment: (productId: number) => void;
+  decrement: (productId: number) => void;
+};
+
+type UserStore = {
+  user: UserType | undefined;
+  setUser: (user: UserType) => void;
+  clearUser: () => void;
+};
+
+type TokenStore = {
+  token: TokenData | undefined;
+  setToken: (token: TokenData) => void;
+  clearToken: () => void;
 };
 
 export const useCartStore = create<CartStore>((set) => ({
@@ -35,10 +54,36 @@ export const useCartStore = create<CartStore>((set) => ({
   },
   setCart: (items: CartItemtype[]) => set({ cart: items }),
   deleteAll: () => set({ cart: [] }),
+
+  increment: (productId: number) => {
+    set((state) => ({
+      cart: state.cart.map((item) =>
+        item.product.id === productId && item.count < 5
+          ? { ...item, count: item.count + 1 }
+          : item
+      ),
+    }));
+  },
+
+  decrement: (productId: number) => {
+    set((state) => ({
+      cart: state.cart.map((item) =>
+        item.product.id === productId && item.count > 1
+          ? { ...item, count: item.count - 1 }
+          : item
+      ),
+    }));
+  },
 }));
 
-export const useUserStore = create((set) => ({
+export const useUserStore = create<UserStore>((set) => ({
   user: undefined,
-  setUser: (user: UserProfile) => set({ user }),
+  setUser: (user: UserType) => set({ user }),
   clearUser: () => set({ user: undefined }),
+}));
+
+export const useTokenStore = create<TokenStore>((set) => ({
+  token: undefined,
+  setToken: (token: TokenData) => set({ token }),
+  clearToken: () => set({ token: undefined }),
 }));
