@@ -4,19 +4,21 @@ import {
   FlatList,
   StyleSheet,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import React, { useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
 import { StatusBar } from "expo-status-bar";
 import CartPayment from "../Component/CartPayment";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { ProductRespData } from "../client/types/responses/StockResponses";
 import { CartItemtype, useCartStore } from "../zustand/store";
 import CartItem from "../Component/CartItem";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 export default function Cart() {
   const { cart, deleteitem } = useCartStore();
-
+  const [delivery, setDelivery] = useState<boolean>(false);
+  const { id } = useLocalSearchParams();
   const renderitem = ({ item }: { item: CartItemtype }) => {
     return <CartItem item={item} key={item.product.id} />;
   };
@@ -45,7 +47,7 @@ export default function Cart() {
                     fontFamily: "JosefinSans-Regular",
                   }}
                   onPress={(isChecked: boolean) => {
-                    console.log(isChecked);
+                    setDelivery(isChecked);
                   }}
                 />
               </View>
@@ -58,7 +60,7 @@ export default function Cart() {
               renderItem={renderitem}
             />
           </View>
-          <CartPayment></CartPayment>
+          <CartPayment delivery={delivery} pharmacyid={id}></CartPayment>
         </>
       ) : (
         <View style={Styles.ContainerList}>

@@ -6,7 +6,7 @@ import { AntDesign, MaterialIcons } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 import { Dropdown } from "react-native-element-dropdown";
 
-const Rangedata = [
+export const Rangedata = [
   { label: "1Km", value: "1000" },
   { label: "2Km", value: "2000" },
   { label: "3km", value: "3000" },
@@ -81,38 +81,6 @@ export default function FilterModal({ Visible, Range, Statevisible }) {
               />
             )}
           />
-          {/* <Slider
-            value={RangeSlider}
-            onValueChange={hundelRange}
-            maximumValue={5000}
-            minimumValue={0}
-            step={1}
-            allowTouchTrack
-            style={Modalstyles.slider}
-            orientation="horizontal"
-            trackStyle={{ height: 5, backgroundColor: "black" }}
-            thumbStyle={{
-              height: 30,
-              width: 30,
-              backgroundColor: "white",
-              justifyContent: "center",
-              alignItems: "center",
-              shadowColor: SHADOWS.small.shadowColor,
-              shadowOffset: SHADOWS.small.shadowOffset,
-              shadowOpacity: SHADOWS.small.shadowOpacity,
-              shadowRadius: SHADOWS.small.shadowOpacity,
-              elevation: SHADOWS.small.elevation,
-            }}
-            thumbProps={{
-              children: (
-                <MaterialIcons
-                  name="gps-fixed"
-                  size={20}
-                  color={COLORSS.Green}
-                />
-              ),
-            }}
-          /> */}
         </View>
       </View>
     </Modal>

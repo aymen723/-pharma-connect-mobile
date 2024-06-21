@@ -4,19 +4,35 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Button,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
 import { router } from "expo-router";
 import { useCartStore } from "../zustand/store";
 
-export default function CartPayment() {
+export default function CartPayment({
+  delivery,
+  pharmacyid,
+}: {
+  pharmacyid: number;
+  delivery: boolean;
+}) {
   const { cart } = useCartStore();
   const [OrderTotal, setOrderTotal] = useState<number>(0);
   const [deliverycost, setdeliverycost] = useState<number>(0);
   const [taxcost, settaxcost] = useState<number>(0);
   const [Total, setTotal] = useState<number>(0);
 
+  function Tocheckout() {
+    router.push({
+      pathname: "/Screens/Checkout",
+      params: {
+        delivery: delivery,
+        idpharamcy: pharmacyid,
+      },
+    });
+  }
   useEffect(() => {
     let order = 0;
     cart.forEach((element) => {
@@ -25,6 +41,7 @@ export default function CartPayment() {
     setOrderTotal(order);
     setTotal(order);
   }, [cart]);
+
   return (
     <View style={styles.container}>
       <View style={styles.orderinfo}>
@@ -55,9 +72,7 @@ export default function CartPayment() {
       <View style={styles.orderbutton}>
         <TouchableOpacity
           onPress={() => {
-            router.push({
-              pathname: "src/Screens/Checkout",
-            });
+            Tocheckout();
           }}
           style={Gstyles.BigButton}
         >

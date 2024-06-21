@@ -35,7 +35,8 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { useCartStore } from "../zustand/store";
 import { MaterialIcons } from "@expo/vector-icons";
 import Uptime from "./Uptime";
-
+import { Feather } from "@expo/vector-icons";
+import { router } from "expo-router";
 export default function BottomSheetMapSearch({
   pharmacy,
 }: {
@@ -138,7 +139,9 @@ export default function BottomSheetMapSearch({
           }}
           style={styles.Buttonscreen}
         >
-          <Text style={[styles.Textscreen, { color: "red" }]}>Cart</Text>
+          <Text style={[styles.Textscreen, { color: COLORSS.purpal }]}>
+            Cart
+          </Text>
         </TouchableOpacity>
       </View>
 
@@ -190,7 +193,7 @@ export default function BottomSheetMapSearch({
 
               <View>
                 {pharmacyuptime?.uptimes?.map((item) => {
-                  return <Uptime item={item} />;
+                  return <Uptime key={item.id} item={item} />;
                 })}
               </View>
             </View>
@@ -216,125 +219,85 @@ export default function BottomSheetMapSearch({
         </>
       ) : null}
       {cartscreen ? (
-        <BottomSheetScrollView contentContainerStyle={{ alignItems: "center" }}>
-          {cart.map((item) => {
-            return (
-              <View style={styles.productitem} key={item.product.id}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    width: "80%",
-                  }}
-                >
+        <>
+          <BottomSheetScrollView
+            contentContainerStyle={{ alignItems: "center" }}
+          >
+            {cart.map((item) => {
+              return (
+                <View style={styles.productitem} key={item.product.id}>
                   <View
                     style={{
-                      height: "90%",
-                      width: "25%",
-                      borderRadius: 20,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      width: "80%",
                     }}
                   >
-                    <Image
+                    <View
                       style={{
-                        height: "100%",
-                        width: "100%",
-                        resizeMode: "contain",
-                      }}
-                      source={{ uri: item.product.picture }}
-                    ></Image>
-                  </View>
-                  <View>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        fontWeight: "600",
-                        marginLeft: 10,
+                        height: "90%",
+                        width: "25%",
+                        borderRadius: 20,
                       }}
                     >
-                      {item.product.name}
-                    </Text>
+                      <Image
+                        style={{
+                          height: "100%",
+                          width: "100%",
+                          resizeMode: "contain",
+                        }}
+                        source={{ uri: item.product.picture }}
+                      ></Image>
+                    </View>
+                    <View>
+                      <Text
+                        style={{
+                          fontSize: 14,
+                          fontWeight: "600",
+                          marginLeft: 10,
+                        }}
+                      >
+                        {item.product.name}
+                      </Text>
+                    </View>
                   </View>
-                </View>
 
-                <TouchableOpacity
-                  onPress={() => {
-                    deleteitem(item);
-                  }}
-                >
-                  <MaterialIcons
-                    name="delete-outline"
-                    size={20}
-                    color={COLORSS.Green}
-                  />
-                </TouchableOpacity>
-              </View>
-            );
-          })}
-        </BottomSheetScrollView>
+                  <TouchableOpacity
+                    onPress={() => {
+                      deleteitem(item);
+                    }}
+                  >
+                    <MaterialIcons
+                      name="delete-outline"
+                      size={20}
+                      color={COLORSS.Green}
+                    />
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+            <View style={{}}></View>
+          </BottomSheetScrollView>
+          <View style={styles.CartView}>
+            <TouchableOpacity
+              onPress={() => {
+                if (pharma) {
+                  router.push({
+                    pathname: "/Screens/Cart",
+                    params: pharma,
+                  });
+                }
+              }}
+              style={styles.CartButton}
+            >
+              <Feather name="shopping-cart" size={24} color="white" />
+            </TouchableOpacity>
+          </View>
+        </>
       ) : null}
     </BottomSheet>
   );
 }
-
-//  <BottomSheetScrollView
-//    // horizontal
-//    style={styles.contentContainer}
-//  >
-//    <View>
-//      {pharma ? (
-//        <>
-//          <Image
-//            style={styles.Pharmacypicture}
-//            source={{ uri: pharma?.picture }}
-//          ></Image>
-
-//          <View style={styles.pharmacyIcon}>
-//            <FontAwesome6 name="hospital" size={30} color="black" />
-//          </View>
-//        </>
-//      ) : (
-//        <View
-//          style={{
-//            height: "100%",
-//            alignItems: "center",
-//            justifyContent: "center",
-//          }}
-//        >
-//          <ActivityIndicator
-//            color={COLORSS.Green}
-//            size={"small"}
-//          ></ActivityIndicator>
-//        </View>
-//      )}
-//    </View>
-//    <View style={styles.PharmacyView}>
-//      <View style={styles.pharmaContent}>
-//        <Text style={styles.BigTitle}>{pharma?.name}</Text>
-
-//        <Text style={styles.Smalltext}>Phone : {pharma?.phoneNumber}</Text>
-//        <Text style={styles.Smalltext}>
-//          Support e-Payment :{pharma?.supportPayment}
-//        </Text>
-//      </View>
-//    </View>
-//    <View>
-//      <Text style={styles.productstitle}> les Produites </Text>
-//    </View>
-//    {Stock ? (
-//      <FlatList
-//        style={{ backgroundColor: COLORSS.white }}
-//        contentContainerStyle={{ width: "100%" }}
-//        data={Stock?.content}
-//        showsHorizontalScrollIndicator={false}
-//        showsVerticalScrollIndicator={false}
-//        overScrollMode="never"
-//        numColumns={2}
-//        columnWrapperStyle={styles.row}
-//        keyExtractor={(item) => item.product.id.toString()}
-//        renderItem={({ item }) => <Productcard item={item.product} />} // pagingEnabled={true}
-//      />
-//    ) : null}
-//  </BottomSheetScrollView>;
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -342,16 +305,29 @@ const styles = StyleSheet.create({
     backgroundColor: COLORSS.white,
     // alignItems: "center",
   },
+  CartView: {
+    height: 60,
+    justifyContent: "center",
+    alignItems: "flex-end",
+    paddingRight: 20,
+  },
   PharmacyView: {
     width: "100%",
-    borderWidth: 1,
-    borderColor: "black",
+    // borderWidth: 1,
+    // borderColor: "black",
     justifyContent: "center",
     alignItems: "flex-start",
     marginTop: 30,
     padding: 10,
   },
-
+  CartButton: {
+    height: 40,
+    width: 70,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 9,
+    backgroundColor: COLORSS.Green,
+  },
   pharmacyIcon: {
     height: 100,
     width: 100,

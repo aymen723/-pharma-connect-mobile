@@ -8,7 +8,7 @@ import {
 import React, { useState } from "react";
 import { COLORSS } from "../constants/theme";
 import AddressItem from "./AddressItem";
-import type { Address } from "../Models/models";
+import { Address } from "../client/types/requests/paymentRequests";
 // import { Plus } from "lucide-react-native";
 export default function Delivery() {
   const [empty, setempty] = useState(true);
@@ -26,9 +26,9 @@ export default function Delivery() {
           }}
           style={{ flexDirection: "row" }}
         >
-          {/* <Plus color={COLORSS.purpal} size={20} /> */}
           <Text style={{ color: COLORSS.purpal }}>Add More</Text>
         </TouchableOpacity>
+        <View></View>
       </View>
       {empty ? (
         <>
@@ -38,7 +38,7 @@ export default function Delivery() {
         </>
       ) : (
         <View>
-          <Text>azdazddd</Text>
+          <Text>azdzdzzdzzdzzdzd</Text>
         </View>
       )}
     </View>
@@ -53,8 +53,7 @@ const styles = StyleSheet.create({
   titlecontainer: {
     width: "100%",
     height: "15%",
-    borderColor: "red",
-    borderWidth: 1,
+
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -62,38 +61,16 @@ const styles = StyleSheet.create({
   addresscontainer: {
     width: "100%",
     height: "85%",
-    borderWidth: 1,
-    borderColor: "red",
   },
 });
 
 const listaddress: Address[] = [
   {
     id: 1,
-    address: "address1",
-    city: "ain smara",
+    address: "Haricha ammar cite 506 BT 31 N 403",
+    city: "Ain Smara",
     state: "constantine",
-    name: "home",
-  },
-  {
-    id: 2,
-    address: "address1",
-    city: "ain smara",
-    state: "constantine",
-    name: "home",
-  },
-  {
-    id: 3,
-    address: "address1",
-    city: "ain smara",
-    state: "constantine",
-    name: "home",
-  },
-  {
-    id: 4,
-    address: "address1",
-    city: "ain smara",
-    state: "constantine",
-    name: "home",
+    name: "Benmohammed aymen",
+    phone: "0559679320",
   },
 ];

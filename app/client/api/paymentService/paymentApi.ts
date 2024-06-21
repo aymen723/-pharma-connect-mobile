@@ -5,14 +5,16 @@ import { OrderRespData } from "../../types/responses/StockResponses";
 import { PaymentRespData } from "../../types/responses/paimentResponses";
 import axios, { AxiosRequestConfig } from "axios";
 
-export const postPayment = (
+export const postPayment = async (
   request: PaymentCreationRequest,
   config?: AxiosRequestConfig
 ) => {
+  const token = await getLocalAccessToken();
+
   return axios<PaymentRespData>({
     url: PAYMENT_SERVICE_URL_V1 + "/payment",
     headers: {
-      Authorization: "Bearer " + getLocalAccessToken(),
+      Authorization: "Bearer " + token,
       ...config?.headers,
     },
     data: request,
@@ -21,14 +23,16 @@ export const postPayment = (
   });
 };
 
-export const fetchPaymentById = (
+export const fetchPaymentById = async (
   paymentId: PaymentRespData["paymentId"],
   config?: AxiosRequestConfig
 ) => {
+  const token = await getLocalAccessToken();
+
   return axios<PaymentRespData>({
     url: PAYMENT_SERVICE_URL_V1 + `/payment/${paymentId}`,
     headers: {
-      Authorization: "Bearer " + getLocalAccessToken(),
+      Authorization: "Bearer " + token,
       ...config?.headers,
     },
     method: "GET",

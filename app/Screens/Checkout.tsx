@@ -4,10 +4,36 @@ import { COLORSS, Gstyles } from "../constants/theme";
 import Delivery from "../Component/Delivery";
 import { CheckBox } from "@rneui/themed";
 import { useCartStore } from "../zustand/store";
+import { useLocalSearchParams } from "expo-router";
+import { postPayment } from "../client/api/paymentService/paymentApi";
+import { PaymentCreationRequest } from "../client/types/requests/paymentRequests";
 
 export default function Checkout() {
   const [result, setResult] = useState(null);
+  const { delivery, idpharamcy } = useLocalSearchParams();
   const { cart } = useCartStore();
+
+  function Placeorder() {
+    const payment: PaymentCreationRequest = {
+      delivery: true,
+      pharmacyId: 7,
+      products: cart.map((item) => {
+        return {
+          productId: item.product.id,
+          count: item.count,
+        };
+      }),
+    };
+
+    console.log(payment);
+    postPayment(payment)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   return (
     <View style={Gstyles.container}>
       <View
@@ -27,7 +53,7 @@ export default function Checkout() {
               Total
             </Text>
             <Text style={{ fontSize: 16, color: COLORSS.textcolor }}>
-              DA 23223
+              Da {}
             </Text>
           </View>
         </View>
@@ -36,43 +62,18 @@ export default function Checkout() {
         <Delivery></Delivery>
       </View>
       <View style={styles.checkoutcontainer}>
-        <View style={styles.PaymentTitle}>
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: "bold",
-              color: COLORSS.textcolor,
-            }}
-          >
-            Payment method
-          </Text>
-        </View>
-        <View style={styles.methodView}>
-          <View style={styles.methodcheck}>
-            <Text>ECCP</Text>
-            <CheckBox></CheckBox>
-          </View>
-          <View style={styles.methodcheck}>
-            <Text>CIB</Text>
-            <CheckBox></CheckBox>
-          </View>
-        </View>
         <View
           style={{
             width: "100%",
             height: 70,
-            borderColor: "black",
-            borderWidth: 2,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
           <TouchableOpacity
-            // onPress={() => {
-            //   router.push({
-            //     pathname: "src/Screens/Checkout",
-            //   });
-            // }}
+            onPress={() => {
+              Placeorder();
+            }}
             style={Gstyles.BigButton}
           >
             <Text style={Gstyles.BigButtonText}>Place Order</Text>
@@ -85,8 +86,8 @@ export default function Checkout() {
 
 const styles = StyleSheet.create({
   orderinfo: {
-    borderWidth: 1,
-    borderColor: "red",
+    // borderWidth: 1,
+    // borderColor: "red",
     width: "90%",
     height: "100%",
     justifyContent: "space-between",
@@ -101,22 +102,22 @@ const styles = StyleSheet.create({
   orderaddress: {
     width: "100%",
     height: "50%",
-    borderWidth: 1,
-    borderColor: "black",
+    // borderWidth: 1,
+    // borderColor: "black",
     justifyContent: "center",
     alignItems: "center",
   },
   checkoutcontainer: {
     width: "100%",
     height: "43%",
-    borderWidth: 1,
-    borderColor: "black",
-    justifyContent: "flex-start",
+    // borderWidth: 1,
+    // borderColor: "black",
+    justifyContent: "flex-end",
     alignItems: "center",
   },
   PaymentTitle: {
-    borderColor: "green",
-    borderWidth: 1,
+    // borderColor: "green",
+    // borderWidth: 1,
     height: 60,
     width: "90%",
     justifyContent: "center",
@@ -126,14 +127,14 @@ const styles = StyleSheet.create({
     width: "90%",
     height: 60,
     flexDirection: "row",
-    borderColor: "black",
-    borderWidth: 1,
+    // borderColor: "black",
+    // borderWidth: 1,
     borderRadius: 15,
     justifyContent: "space-evenly",
   },
   methodView: {
-    borderWidth: 1,
-    borderColor: "red",
+    // borderWidth: 1,
+    // borderColor: "red",
     width: "100%",
     justifyContent: "space-around",
     alignItems: "center",

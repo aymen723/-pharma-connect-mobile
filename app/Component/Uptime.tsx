@@ -8,13 +8,13 @@ import {
 export default function Uptime({ item }: { item: UptimeRespData }) {
   return (
     <View style={styles.Viewuptime} key={item.id}>
-      <View>
+      <View style={{ padding: 10 }}>
         <Text>{item.day}</Text>
       </View>
-      <View>
+      <View style={{ padding: 10 }}>
         <Text>{item.openTime}</Text>
       </View>
-      <View>
+      <View style={{ padding: 10 }}>
         <Text>{item.closeTime}</Text>
       </View>
     </View>
@@ -23,8 +23,6 @@ export default function Uptime({ item }: { item: UptimeRespData }) {
 
 const styles = StyleSheet.create({
   Viewuptime: {
-    borderWidth: 1,
-    borderColor: "red",
     width: "100%",
     flexDirection: "row",
     height: 40,
