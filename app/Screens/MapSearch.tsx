@@ -30,6 +30,7 @@ import { useCartStore } from "../zustand/store";
 import Modal from "react-native-modal";
 import { withDecay } from "react-native-reanimated";
 import { MaterialIcons } from "@expo/vector-icons";
+import { fetchPharmacyUptime } from "../client/api/stockService/productApi";
 export default function MapSearch() {
   const params = useLocalSearchParams();
   const { ProductID } = params;
@@ -113,7 +114,7 @@ export default function MapSearch() {
         >
           <Entypo name="chevron-left" size={24} color={COLORSS.Green} />
         </TouchableOpacity>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => {
             // router.back();
             setModalVisible(true);
@@ -125,7 +126,7 @@ export default function MapSearch() {
           >
             {cart.length}
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </>
       {loc ? (
         <MapView
@@ -178,7 +179,7 @@ export default function MapSearch() {
       )}
 
       <BottomSheetMapSearch pharmacy={Pharmacy} />
-      <Modal
+      {/* <Modal
         backdropOpacity={0.4}
         isVisible={isModalVisible}
         onBackdropPress={toggleModal}
@@ -254,7 +255,7 @@ export default function MapSearch() {
             </TouchableOpacity>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 }

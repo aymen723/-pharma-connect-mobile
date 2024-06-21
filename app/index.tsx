@@ -20,6 +20,10 @@ export default function Loading() {
     try {
       const value = await AsyncStorage.getItem("@User");
       const token = await AsyncStorage.getItem("@token");
+      router.push("/(auth)/Onboarding");
+      console.log(value);
+      console.log(token);
+
       if (value !== null && token !== null) {
         const object = JSON.parse(value as string);
         router.replace("/tabs/Home");
@@ -35,7 +39,7 @@ export default function Loading() {
 
   useEffect(() => {
     CheckUser();
-  }, []);
+  }, [User]);
   return (
     <View
       style={{

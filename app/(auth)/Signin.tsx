@@ -52,15 +52,25 @@ export default function Signin() {
       await GoogleSignin.hasPlayServices();
 
       GoogleSignin.signIn().then((res) => {
-        if (res) {
-          AsyncStorage.setItem("@User", JSON.stringify(res));
+        if (res.idToken) {
           setUser(res.user);
-          googleIdAuthentication(res.idToken as string).then((res) => {
-            console.log("here the googleIdAuthentication", res.data);
-            setauthresponse(res.data);
-            setToken(res.data.tokenData);
-            AsyncStorage.setItem("@token", JSON.stringify(res.data.tokenData));
-          });
+          googleIdAuthentication(res.idToken as string)
+            .then((res) => {
+              console.log("here the googleIdAuthentication", res.data);
+              setauthresponse(res.data);
+              setToken(res.data.tokenData);
+              AsyncStorage.setItem("@User", JSON.stringify(res.data));
+              AsyncStorage.setItem(
+                "@token",
+                JSON.stringify(res.data.tokenData)
+              );
+            })
+            .catch((err) => {
+              console.log(
+                "this error in the Singin googleIdAuthentication",
+                err
+              );
+            });
         }
 
         router.replace("/tabs/Home");
@@ -167,8 +177,8 @@ const Styles = StyleSheet.create({
   FooterContainer: {
     flex: 0.3,
     backgroundColor: COLORSS.Green,
-    borderWidth: 1,
-    borderColor: "red",
+    // borderWidth: 1,
+    // borderColor: "red",
   },
   FooterContent: {
     borderTopLeftRadius: 60,

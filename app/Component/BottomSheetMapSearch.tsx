@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   VirtualizedList,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import React, {
   useCallback,
@@ -15,12 +16,14 @@ import React, {
   useState,
 } from "react";
 import BottomSheet, {
+  BottomSheetFlatList,
   BottomSheetScrollView,
   BottomSheetView,
 } from "@gorhom/bottom-sheet";
 import {
   AvailableStockRespData,
   PharmacyRespData,
+  PharmacyUptime,
 } from "../client/types/responses/StockResponses";
 import { fetchPharmacyById } from "../client/api/stockService/pharmacyApi";
 import { COLORSS, SHADOWS } from "../constants/theme";
@@ -28,8 +31,10 @@ import { fetchStockFromPharmacy } from "../client/api/stockService/stockApi";
 import { Page } from "../client/types/responses";
 import { fetchPharmacyUptime } from "../client/api/stockService/productApi";
 import Productcard from "./Productcard";
-import { TouchableOpacity } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { useCartStore } from "../zustand/store";
+import { MaterialIcons } from "@expo/vector-icons";
+import Uptime from "./Uptime";
 
 export default function BottomSheetMapSearch({
   pharmacy,
@@ -40,7 +45,15 @@ export default function BottomSheetMapSearch({
   const [Stock, setStock] = useState<
     Page<AvailableStockRespData> | undefined
   >();
+
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const [infoscreen, setinfoscreen] = useState(false);
+  const [stockscreen, setstockscreen] = useState(false);
+  const [cartscreen, setcartscreen] = useState(false);
+  const [pharmacyuptime, setpharmacyuptime] = useState<
+    PharmacyUptime | undefined
+  >();
+  const { cart, deleteitem } = useCartStore();
   const snappoints = useMemo(() => ["5%", "50%", "90%"], []);
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index);
@@ -56,7 +69,8 @@ export default function BottomSheetMapSearch({
         setPharmacy(res.data);
       });
       fetchPharmacyUptime(pharmacy.id).then((res) => {
-        console.log(res.data);
+        console.log("time for pharmacy", res.data);
+        setpharmacyuptime(res.data);
       });
     }
   }
@@ -67,6 +81,21 @@ export default function BottomSheetMapSearch({
         setStock(res.data);
       });
     }
+  }
+  function hundleStockscreen() {
+    setstockscreen(true);
+    setcartscreen(false);
+    setinfoscreen(false);
+  }
+  function hundleCartscreen() {
+    setstockscreen(false);
+    setcartscreen(true);
+    setinfoscreen(false);
+  }
+  function hundleInfoscreen() {
+    setstockscreen(false);
+    setcartscreen(false);
+    setinfoscreen(true);
   }
   useEffect(() => {
     fetchpharmacy();
@@ -84,68 +113,228 @@ export default function BottomSheetMapSearch({
       ref={bottomSheetRef}
       onChange={handleSheetChanges}
     >
-      <BottomSheetScrollView
-        // horizontal
-        style={styles.contentContainer}
-      >
-        <View>
-          {pharma ? (
-            <>
-              <Image
-                style={styles.Pharmacypicture}
-                source={{ uri: pharma?.picture }}
-              ></Image>
+      <View style={styles.sheetButton}>
+        <TouchableOpacity
+          onPress={() => {
+            hundleInfoscreen();
+          }}
+          style={styles.Buttonscreen}
+        >
+          <Text style={[styles.Textscreen, { color: COLORSS.Green }]}>
+            pharmacy Info
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            hundleStockscreen();
+          }}
+          style={styles.Buttonscreen}
+        >
+          <Text style={[styles.Textscreen, { color: "black" }]}>Stock</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            hundleCartscreen();
+          }}
+          style={styles.Buttonscreen}
+        >
+          <Text style={[styles.Textscreen, { color: "red" }]}>Cart</Text>
+        </TouchableOpacity>
+      </View>
 
-              <View style={styles.pharmacyIcon}>
-                <FontAwesome6 name="hospital" size={30} color="black" />
-              </View>
-            </>
-          ) : (
-            <View
-              style={{
-                height: "100%",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <ActivityIndicator
-                color={COLORSS.Green}
-                size={"small"}
-              ></ActivityIndicator>
+      {infoscreen ? (
+        <>
+          <BottomSheetScrollView>
+            <View>
+              {pharma && pharmacyuptime ? (
+                <>
+                  <Image
+                    style={styles.Pharmacypicture}
+                    source={{ uri: pharma?.picture }}
+                  ></Image>
+
+                  <View style={styles.pharmacyIcon}>
+                    <FontAwesome6 name="hospital" size={30} color="black" />
+                  </View>
+                </>
+              ) : (
+                <View
+                  style={{
+                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <ActivityIndicator
+                    color={COLORSS.Green}
+                    size={"small"}
+                  ></ActivityIndicator>
+                </View>
+              )}
             </View>
-          )}
-        </View>
-        <View style={styles.PharmacyView}>
-          <View style={styles.pharmaContent}>
-            <Text style={styles.BigTitle}>{pharma?.name}</Text>
+            <View style={styles.PharmacyView}>
+              <View style={styles.pharmaContent}>
+                <Text style={styles.BigTitle}>{pharma?.name}</Text>
 
-            <Text style={styles.Smalltext}>Phone : {pharma?.phoneNumber}</Text>
-            <Text style={styles.Smalltext}>
-              Support e-Payment :{pharma?.supportPayment}
-            </Text>
-          </View>
-        </View>
-        <View>
-          <Text style={styles.productstitle}> les Produites </Text>
-        </View>
-        {Stock ? (
-          <FlatList
-            style={{ backgroundColor: COLORSS.white }}
-            contentContainerStyle={{ width: "100%" }}
-            data={Stock?.content}
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            overScrollMode="never"
-            numColumns={2}
-            columnWrapperStyle={styles.row}
-            keyExtractor={(item) => item.product.id.toString()}
-            renderItem={({ item }) => <Productcard item={item.product} />} // pagingEnabled={true}
-          />
-        ) : null}
-      </BottomSheetScrollView>
+                <Text style={styles.Smalltext}>
+                  Phone : {pharma?.phoneNumber}
+                </Text>
+                <Text style={styles.Smalltext}>
+                  Support e-Payment :{pharma?.supportPayment}
+                </Text>
+                <Text style={styles.Smalltext}>
+                  Open :{pharmacyuptime?.open}
+                </Text>
+                <Text style={styles.Smalltext}>Time :</Text>
+              </View>
+
+              <View>
+                {pharmacyuptime?.uptimes?.map((item) => {
+                  return <Uptime item={item} />;
+                })}
+              </View>
+            </View>
+          </BottomSheetScrollView>
+        </>
+      ) : null}
+      {stockscreen ? (
+        <>
+          {Stock ? (
+            <BottomSheetFlatList
+              style={{ backgroundColor: COLORSS.white }}
+              contentContainerStyle={{ width: "100%" }}
+              data={Stock?.content}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              overScrollMode="never"
+              numColumns={2}
+              columnWrapperStyle={styles.row}
+              keyExtractor={(item) => item.product.id.toString()}
+              renderItem={({ item }) => <Productcard item={item.product} />} // pagingEnabled={true}
+            />
+          ) : null}
+        </>
+      ) : null}
+      {cartscreen ? (
+        <BottomSheetScrollView contentContainerStyle={{ alignItems: "center" }}>
+          {cart.map((item) => {
+            return (
+              <View style={styles.productitem} key={item.product.id}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    width: "80%",
+                  }}
+                >
+                  <View
+                    style={{
+                      height: "90%",
+                      width: "25%",
+                      borderRadius: 20,
+                    }}
+                  >
+                    <Image
+                      style={{
+                        height: "100%",
+                        width: "100%",
+                        resizeMode: "contain",
+                      }}
+                      source={{ uri: item.product.picture }}
+                    ></Image>
+                  </View>
+                  <View>
+                    <Text
+                      style={{
+                        fontSize: 14,
+                        fontWeight: "600",
+                        marginLeft: 10,
+                      }}
+                    >
+                      {item.product.name}
+                    </Text>
+                  </View>
+                </View>
+
+                <TouchableOpacity
+                  onPress={() => {
+                    deleteitem(item);
+                  }}
+                >
+                  <MaterialIcons
+                    name="delete-outline"
+                    size={20}
+                    color={COLORSS.Green}
+                  />
+                </TouchableOpacity>
+              </View>
+            );
+          })}
+        </BottomSheetScrollView>
+      ) : null}
     </BottomSheet>
   );
 }
+
+//  <BottomSheetScrollView
+//    // horizontal
+//    style={styles.contentContainer}
+//  >
+//    <View>
+//      {pharma ? (
+//        <>
+//          <Image
+//            style={styles.Pharmacypicture}
+//            source={{ uri: pharma?.picture }}
+//          ></Image>
+
+//          <View style={styles.pharmacyIcon}>
+//            <FontAwesome6 name="hospital" size={30} color="black" />
+//          </View>
+//        </>
+//      ) : (
+//        <View
+//          style={{
+//            height: "100%",
+//            alignItems: "center",
+//            justifyContent: "center",
+//          }}
+//        >
+//          <ActivityIndicator
+//            color={COLORSS.Green}
+//            size={"small"}
+//          ></ActivityIndicator>
+//        </View>
+//      )}
+//    </View>
+//    <View style={styles.PharmacyView}>
+//      <View style={styles.pharmaContent}>
+//        <Text style={styles.BigTitle}>{pharma?.name}</Text>
+
+//        <Text style={styles.Smalltext}>Phone : {pharma?.phoneNumber}</Text>
+//        <Text style={styles.Smalltext}>
+//          Support e-Payment :{pharma?.supportPayment}
+//        </Text>
+//      </View>
+//    </View>
+//    <View>
+//      <Text style={styles.productstitle}> les Produites </Text>
+//    </View>
+//    {Stock ? (
+//      <FlatList
+//        style={{ backgroundColor: COLORSS.white }}
+//        contentContainerStyle={{ width: "100%" }}
+//        data={Stock?.content}
+//        showsHorizontalScrollIndicator={false}
+//        showsVerticalScrollIndicator={false}
+//        overScrollMode="never"
+//        numColumns={2}
+//        columnWrapperStyle={styles.row}
+//        keyExtractor={(item) => item.product.id.toString()}
+//        renderItem={({ item }) => <Productcard item={item.product} />} // pagingEnabled={true}
+//      />
+//    ) : null}
+//  </BottomSheetScrollView>;
 
 const styles = StyleSheet.create({
   contentContainer: {
@@ -155,11 +344,11 @@ const styles = StyleSheet.create({
   },
   PharmacyView: {
     width: "100%",
-    height: 150,
+    borderWidth: 1,
+    borderColor: "black",
     justifyContent: "center",
     alignItems: "flex-start",
-    // borderWidth: 10,
-    // borderColor: "red",
+    marginTop: 30,
     padding: 10,
   },
 
@@ -193,7 +382,6 @@ const styles = StyleSheet.create({
   pharmaContent: {
     justifyContent: "space-evenly",
     alignItems: "flex-start",
-    height: "100%",
     width: "95%",
     // borderWidth: 2,
     // borderColor: "green",
@@ -209,5 +397,29 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 10,
     marginLeft: 20,
+  },
+  sheetButton: {
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+    height: 70,
+  },
+  Buttonscreen: {
+    backgroundColor: COLORSS.maingray,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    borderRadius: 10,
+    marginLeft: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  Textscreen: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  productitem: {
+    height: 70,
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
