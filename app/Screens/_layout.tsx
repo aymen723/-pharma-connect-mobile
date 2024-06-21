@@ -107,6 +107,14 @@ export default function ScreensLayout() {
           }}
           name="Chifa"
         />
+
+        <Stack.Screen
+          options={{
+            title: "Order Detail",
+            header: (props) => <CartHeader title={"Order Detail"}></CartHeader>,
+          }}
+          name="Orderdetails"
+        />
       </Stack>
     </GestureHandlerRootView>
   );

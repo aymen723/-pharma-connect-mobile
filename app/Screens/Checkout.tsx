@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { COLORSS, Gstyles } from "../constants/theme";
 import Delivery from "../Component/Delivery";
 import { CheckBox } from "@rneui/themed";
@@ -7,11 +7,15 @@ import { useCartStore } from "../zustand/store";
 import { useLocalSearchParams } from "expo-router";
 import { postPayment } from "../client/api/paymentService/paymentApi";
 import { PaymentCreationRequest } from "../client/types/requests/paymentRequests";
+import { PaymentRespData } from "../client/types/responses/paimentResponses";
+import * as WebBrowser from "expo-web-browser";
 
 export default function Checkout() {
   const [result, setResult] = useState(null);
   const { delivery, idpharamcy } = useLocalSearchParams();
   const { cart } = useCartStore();
+  const [OrderTotal, setOrderTotal] = useState<number>();
+  const [payment, setpayment] = useState<PaymentRespData | undefined>();
 
   function Placeorder() {
     const payment: PaymentCreationRequest = {
@@ -29,11 +33,21 @@ export default function Checkout() {
     postPayment(payment)
       .then((res) => {
         console.log(res.data);
+        setpayment(res.data);
+        WebBrowser.openBrowserAsync(res.data.checkouturl);
       })
       .catch((err) => {
         console.log(err);
       });
   }
+
+  useEffect(() => {
+    let order = 0;
+    cart.forEach((element) => {
+      order = order + element.product.price * element.count;
+    });
+    setOrderTotal(order);
+  }, [cart]);
   return (
     <View style={Gstyles.container}>
       <View
@@ -53,7 +67,7 @@ export default function Checkout() {
               Total
             </Text>
             <Text style={{ fontSize: 16, color: COLORSS.textcolor }}>
-              Da {}
+              Da {OrderTotal}
             </Text>
           </View>
         </View>

@@ -26,14 +26,16 @@ export const fetchOrdres = async (
   });
 };
 
-export const fetchOrderById = (
+export const fetchOrderById = async (
   orderId: OrderRespData["id"],
   config?: AxiosRequestConfig
 ) => {
+  const token = await getLocalAccessToken();
+
   return axios<OrderRespData>({
     url: STOCK_SERVICE_URL_V1 + `/orders/${orderId}`,
     headers: {
-      Authorization: "Bearer " + getLocalAccessToken(),
+      Authorization: "Bearer " + token,
       ...config?.headers,
     },
     method: "GET",
