@@ -9,6 +9,7 @@ import { postPayment } from "../client/api/paymentService/paymentApi";
 import { PaymentCreationRequest } from "../client/types/requests/paymentRequests";
 import { PaymentRespData } from "../client/types/responses/paimentResponses";
 import * as WebBrowser from "expo-web-browser";
+import * as Location from "expo-location";
 
 export default function Checkout() {
   const [result, setResult] = useState(null);
@@ -16,10 +17,28 @@ export default function Checkout() {
   const { cart } = useCartStore();
   const [OrderTotal, setOrderTotal] = useState<number>();
   const [payment, setpayment] = useState<PaymentRespData | undefined>();
+  const [loc, setLocation] = useState<Location.LocationObject | undefined>();
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  async function GetLocation() {
+    const { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      setErrorMsg("Permission to access location was denied");
+      return;
+    }
+
+    const location = await Location.getCurrentPositionAsync({});
+    console.log(location);
+    console.log(location.coords.altitude);
+    console.log(location.coords.longitude);
+    setLocation(location);
+  }
 
   function Placeorder() {
     const payment: PaymentCreationRequest = {
       delivery: true,
+      x: loc?.coords.longitude,
+      y: loc?.coords.latitude,
       pharmacyId: 7,
       products: cart.map((item) => {
         return {
@@ -42,11 +61,21 @@ export default function Checkout() {
   }
 
   useEffect(() => {
-    let order = 0;
-    cart.forEach((element) => {
-      order = order + element.product.price * element.count;
-    });
-    setOrderTotal(order);
+    if (delivery == "true") {
+      let order = 0;
+      cart.forEach((element) => {
+        order = order + element.product.price * element.count;
+      });
+      setOrderTotal(order + 200);
+    } else {
+      let order = 0;
+      cart.forEach((element) => {
+        order = order + element.product.price * element.count;
+      });
+      setOrderTotal(order);
+    }
+
+    GetLocation();
   }, [cart]);
   return (
     <View style={Gstyles.container}>

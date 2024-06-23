@@ -151,13 +151,19 @@ export default function Account() {
               }}
             >
               <Text style={[Gstyles.BigButtonText, { color: "black" }]}>
-                voulez vous vous déconnecter
+                Sign out of PharmaConnect
               </Text>
             </View>
             <View
               style={{ flexDirection: "row", justifyContent: "space-evenly" }}
             >
-              <Button title="Canacel"></Button>
+              <Button
+                onPress={() => {
+                  setModalVisible(!isModalVisible);
+                }}
+                title="cancel"
+                color={COLORSS.Green}
+              ></Button>
               <Button onPress={signOut} title="Sign Out" color={"red"}></Button>
             </View>
           </View>

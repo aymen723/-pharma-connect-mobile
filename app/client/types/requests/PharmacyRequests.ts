@@ -10,3 +10,8 @@ export type PharmacyFilterParams = {
   products?: number[] | string[] | number | string;
   search?: string;
 };
+
+export type PharmacyPatchRequest = {
+  newPhoneNumber: string | null;
+  name: string | null;
+};

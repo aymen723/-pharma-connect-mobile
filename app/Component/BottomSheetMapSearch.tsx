@@ -37,24 +37,29 @@ import { MaterialIcons } from "@expo/vector-icons";
 import Uptime from "./Uptime";
 import { Feather } from "@expo/vector-icons";
 import { router } from "expo-router";
+import PharmacyInfo from "./PharmacyInfo";
+import PharmacyProductsList from "./PharmacyProductsList";
 export default function BottomSheetMapSearch({
   pharmacy,
 }: {
   pharmacy: PharmacyRespData | undefined;
 }) {
   const [pharma, setPharmacy] = useState<PharmacyRespData | undefined>();
-  const [Stock, setStock] = useState<
-    Page<AvailableStockRespData> | undefined
-  >();
+  const [Stock, setStock] = useState<AvailableStockRespData[]>([]);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
-  const [infoscreen, setinfoscreen] = useState(false);
+  const [infoscreen, setinfoscreen] = useState(true);
   const [stockscreen, setstockscreen] = useState(false);
   const [cartscreen, setcartscreen] = useState(false);
   const [pharmacyuptime, setpharmacyuptime] = useState<
     PharmacyUptime | undefined
   >();
   const { cart, deleteitem } = useCartStore();
+  const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [page, setPage] = useState(0);
+
   const snappoints = useMemo(() => ["5%", "50%", "90%"], []);
   const handleSheetChanges = useCallback((index: number) => {
     console.log("handleSheetChanges", index);
@@ -75,12 +80,21 @@ export default function BottomSheetMapSearch({
       });
     }
   }
+
   function fetchstock() {
     if (pharmacy) {
-      fetchStockFromPharmacy(pharmacy?.id).then((res) => {
-        console.log(res.data.content);
-        setStock(res.data);
-      });
+      fetchStockFromPharmacy(pharmacy?.id, { page: 0 })
+        .then((res) => {
+          console.log(res.data.content);
+          setStock(res.data.content);
+          setHasMore(res.data.content.length > 0);
+        })
+        .then((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
   }
   function hundleStockscreen() {
@@ -98,6 +112,21 @@ export default function BottomSheetMapSearch({
     setcartscreen(false);
     setinfoscreen(true);
   }
+
+  // const stock = useCallback(async () => {
+  //   if (loadingMore || !hasMore) return;
+
+  //   setLoadingMore(true);
+  //   try {
+  //     const res = await fetchStockFromPharmacy(pharmacy?.id, { page: 0 });
+  //     setStock((prevProducts) => [...prevProducts, ...res.data.content]);
+  //     setHasMore(res.data.content.length > 0);
+  //   } catch (err) {
+  //     console.error("Error fetching products", err);
+  //   } finally {
+  //     setLoadingMore(false);
+  //   }
+  // }, [page, loadingMore, hasMore]);
   useEffect(() => {
     fetchpharmacy();
     fetchstock();
@@ -108,6 +137,13 @@ export default function BottomSheetMapSearch({
     data[index];
 
   const getItemCount = (data: AvailableStockRespData[]) => data.length;
+
+  const handleLoadMore = () => {
+    if (!loadingMore && hasMore) {
+      setPage((prevPage) => prevPage + 1);
+      // stock();
+    }
+  };
   return (
     <BottomSheet
       snapPoints={snappoints}
@@ -150,16 +186,7 @@ export default function BottomSheetMapSearch({
           <BottomSheetScrollView>
             <View>
               {pharma && pharmacyuptime ? (
-                <>
-                  <Image
-                    style={styles.Pharmacypicture}
-                    source={{ uri: pharma?.picture }}
-                  ></Image>
-
-                  <View style={styles.pharmacyIcon}>
-                    <FontAwesome6 name="hospital" size={30} color="black" />
-                  </View>
-                </>
+                <PharmacyInfo pharmacy={pharma} />
               ) : (
                 <View
                   style={{
@@ -168,55 +195,15 @@ export default function BottomSheetMapSearch({
                     justifyContent: "center",
                   }}
                 >
-                  <ActivityIndicator
-                    color={COLORSS.Green}
-                    size={"small"}
-                  ></ActivityIndicator>
+                  <ActivityIndicator color={COLORSS.Green} size={"small"} />
                 </View>
               )}
-            </View>
-            <View style={styles.PharmacyView}>
-              <View style={styles.pharmaContent}>
-                <Text style={styles.BigTitle}>{pharma?.name}</Text>
-
-                <Text style={styles.Smalltext}>
-                  Phone : {pharma?.phoneNumber}
-                </Text>
-                <Text style={styles.Smalltext}>
-                  Support e-Payment :{pharma?.supportPayment}
-                </Text>
-                <Text style={styles.Smalltext}>
-                  Open :{pharmacyuptime?.open}
-                </Text>
-                <Text style={styles.Smalltext}>Time :</Text>
-              </View>
-
-              <View>
-                {pharmacyuptime?.uptimes?.map((item) => {
-                  return <Uptime key={item.id} item={item} />;
-                })}
-              </View>
             </View>
           </BottomSheetScrollView>
         </>
       ) : null}
       {stockscreen ? (
-        <>
-          {Stock ? (
-            <BottomSheetFlatList
-              style={{ backgroundColor: COLORSS.white }}
-              contentContainerStyle={{ width: "100%" }}
-              data={Stock?.content}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              overScrollMode="never"
-              numColumns={2}
-              columnWrapperStyle={styles.row}
-              keyExtractor={(item) => item.product.id.toString()}
-              renderItem={({ item }) => <Productcard item={item.product} />} // pagingEnabled={true}
-            />
-          ) : null}
-        </>
+        <>{Stock ? <PharmacyProductsList stock={Stock || []} /> : null}</>
       ) : null}
       {cartscreen ? (
         <>

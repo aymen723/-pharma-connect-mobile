@@ -5,12 +5,12 @@
     "scheme": "pharmaconnect",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/Images/Pharma_Connect.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/Images/image1.png",
+      "image": "./assets/Images/Pharma_Connect.png",
       "resizeMode": "contain",
-      "backgroundColor": "#95d5b2"
+      "backgroundColor": "#15BD92"
     },
     "assetBundlePatterns": [
       "**/*"

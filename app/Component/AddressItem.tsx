@@ -1,56 +1,49 @@
-import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { COLORSS, SHADOWS } from "../constants/theme";
-import { Address } from "../client/types/requests/paymentRequests";
+import { View, Text, StyleSheet, FlatList } from "react-native";
 
-export default function AddressItem({ item }: { item: Address }) {
-  return (
-    <View style={styles.addressitems}>
-      <View>
-        <View style={styles.itemtext}>
-          <Text>Name :</Text>
-          <Text> {item.name}</Text>
-        </View>
-        <View style={styles.itemtext}>
-          <Text>Address :</Text>
-          <Text> {item.address}</Text>
-        </View>
-        <View style={styles.itemtext}>
-          <Text>City :</Text>
-          <Text> {item.city}</Text>
-        </View>
-      </View>
-      <View>
-        <View style={styles.itemtext}>
-          <Text>State :</Text>
-          <Text> {item.state}</Text>
-        </View>
-        <View style={styles.itemtext}>
-          <Text>Phone :</Text>
-          <Text> {item.phone}</Text>
-        </View>
-      </View>
+type Address = {
+  id: number;
+  address: string;
+  city: string;
+  state: string;
+  name: string;
+  phone: string;
+};
+
+type AddressListProps = {
+  addresses: Address[];
+};
+
+const AddressList: React.FC<AddressListProps> = ({ addresses }) => {
+  const renderItem = ({ item }: { item: Address }) => (
+    <View style={styles.addressContainer}>
+      <Text style={styles.name}>{item.name}</Text>
+      <Text>{item.address}</Text>
+      <Text>
+        {item.city}, {item.state}
+      </Text>
+      <Text>Phone: {item.phone}</Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  addressitems: {
-    borderRadius: 5,
-    marginBottom: 10,
-    height: 170,
-    width: "100%",
-    backgroundColor: "white",
-    flexDirection: "row",
-    // borderWidth: 1,
-    // borderColor: "red",
-    ...SHADOWS.small,
+  listContainer: {
+    padding: 16,
   },
-  itemtext: {
-    width: "50%",
-    height: 50,
-    flexDirection: "row",
-    borderWidth: 1,
-    borderColor: "red",
+  addressContainer: {
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  name: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 8,
   },
 });

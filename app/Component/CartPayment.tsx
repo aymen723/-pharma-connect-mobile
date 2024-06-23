@@ -34,13 +34,25 @@ export default function CartPayment({
     });
   }
   useEffect(() => {
-    let order = 0;
-    cart.forEach((element) => {
-      order = order + element.product.price * element.count;
-    });
-    setOrderTotal(order);
-    setTotal(order);
-  }, [cart]);
+    if (delivery === true) {
+      let order = 0;
+      cart.forEach((element) => {
+        order = order + element.product.price * element.count;
+      });
+      setdeliverycost(200);
+      setOrderTotal(order);
+      setTotal(200 + order);
+    } else {
+      let order = 0;
+      cart.forEach((element) => {
+        order = order + element.product.price * element.count;
+      });
+      setdeliverycost(0);
+
+      setOrderTotal(order);
+      setTotal(order);
+    }
+  }, [cart, delivery]);
 
   return (
     <View style={styles.container}>
@@ -54,6 +66,10 @@ export default function CartPayment({
           <View style={styles.infotext}>
             <Text style={styles.textstyle}>Order Total</Text>
             <Text>{OrderTotal}</Text>
+          </View>
+          <View style={styles.infotext}>
+            <Text style={styles.textstyle}>Delivery</Text>
+            <Text>{deliverycost}</Text>
           </View>
 
           <View style={[styles.infotext, { height: 60 }]}>

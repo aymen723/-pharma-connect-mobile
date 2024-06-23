@@ -15,6 +15,7 @@ export type PaymentRespData = {
   orderId: number;
 
   transactionFee: number;
+
   deliveryPrice: number | null;
 
   //  Double discount;

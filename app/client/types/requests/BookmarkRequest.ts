@@ -4,10 +4,11 @@ export type BookmarkFilterParams = {
   page?: number | string;
   pageSize?: number | string;
   accountId?: number;
+  registeredProd?: number;
 };
 
 export type BookmarkCreateRequest = {
   name?: string;
-  regiteredProd?: number;
+  registeredProd?: number;
   products?: number[];
 };

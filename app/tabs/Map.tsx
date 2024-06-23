@@ -148,6 +148,7 @@ export default function Map() {
                 })
               : null}
           </MapView>
+          <></>
 
           <FilterModal
             Range={SetRange}

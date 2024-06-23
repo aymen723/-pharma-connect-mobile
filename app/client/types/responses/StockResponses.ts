@@ -19,6 +19,7 @@ export type ProductRespData = {
   tags: TagRespData[];
   picture?: string;
   para: boolean;
+  notice?: string | null;
 };
 
 export type Coordinates = {
@@ -35,6 +36,18 @@ export type Location = {
   coordinates: Coordinates;
 };
 
+export type UptimeRespData = {
+  id: number;
+  openTime: string;
+  closeTime: string;
+  day: WeekDay;
+};
+
+export type PharmacyUptime = {
+  uptimes?: UptimeRespData[];
+  open: boolean;
+};
+
 export type PharmacyRespData = {
   id: number;
   name: string;
@@ -44,6 +57,7 @@ export type PharmacyRespData = {
   enabled: boolean;
   picture: string | null;
   phoneNumber: string | null;
+  upTimes: PharmacyUptime;
 };
 
 export type StockId = {
@@ -75,18 +89,6 @@ export type WeekDay =
   | "THURSDAY"
   | "FRIDAY"
   | "SATURDAY";
-
-export type UptimeRespData = {
-  id: number;
-  openTime: string;
-  closeTime: string;
-  day: WeekDay;
-};
-
-export type PharmacyUptime = {
-  uptimes?: UptimeRespData[];
-  open: boolean;
-};
 
 export type BookmarkRespData = {
   id: number;
