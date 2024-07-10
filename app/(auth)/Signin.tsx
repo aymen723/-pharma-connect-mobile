@@ -10,7 +10,7 @@ import * as browser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import React, { useEffect, useState } from "react";
 import { COLORSS, Gstyles, SHADOWS } from "../constants/theme";
-import icon from "../../assets/Images/image1.png";
+import icon from "../../assets/Images/pharma.png";
 import GoogleI from "../../assets/Images/GoogleI.png";
 import { router } from "expo-router";
 import axios from "axios";
@@ -106,7 +106,7 @@ export default function Signin() {
       <StatusBar backgroundColor={COLORSS.Green}></StatusBar>
       <View style={Styles.SigninContainer}>
         <Image style={Styles.Pic} source={icon}></Image>
-        <Text style={Styles.Title}>Pharma Connect</Text>
+        {/* <Text style={Styles.Title}>Pharma Connect</Text> */}
       </View>
       <View style={Styles.FooterContainer}>
         <View style={Styles.FooterContent}>
@@ -187,8 +187,8 @@ const Styles = StyleSheet.create({
     backgroundColor: "white",
   },
   Pic: {
-    width: 200,
-    height: 200,
+    width: 300,
+    height: 300,
   },
   Title: {
     fontSize: 30,

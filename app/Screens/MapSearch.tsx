@@ -114,25 +114,13 @@ export default function MapSearch() {
         >
           <Entypo name="chevron-left" size={24} color={COLORSS.Green} />
         </TouchableOpacity>
-        {/* <TouchableOpacity
-          onPress={() => {
-            // router.back();
-            setModalVisible(true);
-          }}
-          style={styles.cartbutton}
-        >
-          <Text
-            style={{ color: COLORSS.Green, fontSize: 16, fontWeight: "800" }}
-          >
-            {cart.length}
-          </Text>
-        </TouchableOpacity> */}
       </>
       {loc ? (
         <MapView
           initialRegion={{
-            latitude: loc.coords.latitude,
-            longitude: loc.coords.longitude,
+            latitude: 36.257275,
+            longitude: 6.705949,
+
             latitudeDelta: 0.1,
             longitudeDelta: 0.1,
           }}
@@ -179,83 +167,6 @@ export default function MapSearch() {
       )}
 
       <BottomSheetMapSearch pharmacy={Pharmacy} />
-      {/* <Modal
-        backdropOpacity={0.4}
-        isVisible={isModalVisible}
-        onBackdropPress={toggleModal}
-      >
-        <View
-          style={{ height: "50%", backgroundColor: "white", borderRadius: 10 }}
-        >
-          <ScrollView>
-            {cart.map((item) => {
-              return (
-                <View style={styles.productitem} key={item.product.id}>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      width: "80%",
-                    }}
-                  >
-                    <View
-                      style={{
-                        height: "90%",
-                        width: "25%",
-                        borderRadius: 20,
-                      }}
-                    >
-                      <Image
-                        style={{
-                          height: "100%",
-                          width: "100%",
-                          resizeMode: "contain",
-                        }}
-                        source={{ uri: item.product.picture }}
-                      ></Image>
-                    </View>
-                    <View>
-                      <Text
-                        style={{
-                          fontSize: 14,
-                          fontWeight: "600",
-                          marginLeft: 10,
-                        }}
-                      >
-                        {item.product.name}
-                      </Text>
-                    </View>
-                  </View>
-
-                  <TouchableOpacity
-                    onPress={() => {
-                      deleteitem(item);
-                    }}
-                  >
-                    <MaterialIcons
-                      name="delete-outline"
-                      size={20}
-                      color={COLORSS.Green}
-                    />
-                  </TouchableOpacity>
-                </View>
-              );
-            })}
-          </ScrollView>
-          <View style={styles.modalbuttons}>
-            <View style={{ width: "40%" }}></View>
-            <TouchableOpacity
-              style={styles.tobutton}
-              onPress={() => {
-                router.push("/Screens/Cart");
-                setModalVisible(!isModalVisible);
-              }}
-            >
-              <Feather name="shopping-cart" size={24} color="white" />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal> */}
     </View>
   );
 }

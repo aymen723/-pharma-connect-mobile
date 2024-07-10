@@ -61,19 +61,11 @@ export default function Checkout() {
   }
 
   useEffect(() => {
-    if (delivery == "true") {
-      let order = 0;
-      cart.forEach((element) => {
-        order = order + element.product.price * element.count;
-      });
-      setOrderTotal(order + 200);
-    } else {
-      let order = 0;
-      cart.forEach((element) => {
-        order = order + element.product.price * element.count;
-      });
-      setOrderTotal(order);
-    }
+    let order = 0;
+    cart.forEach((element) => {
+      order = order + element.product.price * element.count;
+    });
+    setOrderTotal(order);
 
     GetLocation();
   }, [cart]);

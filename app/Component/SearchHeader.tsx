@@ -207,7 +207,7 @@ export default function SearchHeader({
                 alignItems: "center",
               }}
               onPress={() => {
-                if (ListProducts.length > 1) {
+                if (ListProducts.length > 0) {
                   router.push("/Screens/MapSearch");
                   setCart(
                     ListProducts.map((item) => {
